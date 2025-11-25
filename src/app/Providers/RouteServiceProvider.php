@@ -17,7 +17,8 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
+    public const HOME = '/attendance';
+    public const ADMIN_HOME = '/admin/attendance/list';
 
     /**
      * The controller namespace for the application.
@@ -35,6 +36,12 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // \Illuminate\Support\Facades\Route::matched(function ($event) {
+        //     \Log::info('Matched Route: ' . $event->route->getName());
+        // });
+
+        parent::boot();
+
         $this->configureRateLimiting();
 
         $this->routes(function () {

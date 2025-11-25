@@ -1,0 +1,155 @@
+body {
+  background-color: #f0eff2;
+}
+
+/* コンテナ全体 */
+.correction-container {
+  max-width: 900px;
+  margin: 90px auto;
+  padding-bottom: 60px;
+  font-family: 'Inter', sans-serif;
+}
+
+/* タイトル */
+.title {
+  align-items: center;
+  position: relative;
+  font-size: 30px;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 65px;
+  padding-left: 30px;
+}
+
+/* タイトル左の縦ライン */
+.title::before {
+  content: "";
+  position: absolute;
+  left: -15px;
+  top: 50%;
+  width: 40px;
+  height: 8px;
+  background-color: #000000;
+  transform: rotate(90deg);
+}
+
+.correction-tabs {
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 57px;
+  gap: 106px;
+  margin-bottom: 17px;
+}
+
+.tab-item {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #000000;
+  text-decoration: none;
+}
+
+.tab-item.active {
+  font-weight: 700;
+}
+
+.correction-tabs-line {
+  width: 900px;
+  height: 1px;
+  background-color: #000000;
+  margin: 0 auto 30px;
+}
+
+.correction-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+/* テーブルヘッダー */
+.correction-table thead {
+  background-color: #ffffff;
+  border-bottom: 3px solid #E1E1E1;
+}
+
+.correction-table th {
+  color: #737373;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 10px;
+  text-align: center;
+  letter-spacing: 0.15em;
+}
+
+.status-header {
+  text-align: center;
+  /* padding-left: 55px; */
+}
+
+/* テーブルボディ */
+.correction-table td {
+  color: #737373;
+  font-size: 16px;
+  font-weight: 700;
+  /* letter-spacing: 0.15em; */
+  /* padding: 10px 0 10px 37px; */
+  padding: 10px;
+  border-bottom: 2px solid #E1E1E1;
+  text-align: center;
+}
+
+.status-text {
+  letter-spacing: 0.15em;
+}
+
+/* .correction-table td .col-status {
+  letter-spacing: 0.15em;
+} */
+
+/* 詳細リンク */
+.table-detail-link {
+  color: #000000;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.15em;
+}
+
+/* テーブル最下行の線を消す */
+.correction-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* 各列の幅バランス */
+.correction-table th:nth-child(1),
+.correction-table td:nth-child(1) {
+  width: 17%;
+  /* 日付（少し広め） */
+  text-align: center;
+  /* padding-left: 55px; */
+}
+
+.correction-table th:nth-child(2),
+.correction-table td:nth-child(2),
+.correction-table th:nth-child(3),
+.correction-table td:nth-child(3),
+.correction-table th:nth-child(4),
+.correction-table td:nth-child(4),
+.correction-table th:nth-child(5),
+.correction-table td:nth-child(5) {
+  width: 16%;
+  /* 出勤〜合計を均等に */
+  text-align: left;
+  padding-left: 45px;
+}
+
+/* 詳細ボタン列 */
+.correction-table th:nth-child(6),
+.correction-table td:nth-child(6) {
+  width: 19%;
+  text-align: center;
+}

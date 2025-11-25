@@ -1,0 +1,64 @@
+.verify-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: calc(100vh - 82px);
+  background-color: #fff;
+  font-family: "Inter", sans-serif;
+}
+
+.verify-box {
+  text-align: center;
+  margin-top: 180px;
+}
+
+.verify-message {
+  font-size: 24px;
+  font-weight: 700;
+  color: #000;
+  line-height: 1.4;
+  width: 720px;
+  margin: 0 auto 60px auto;
+}
+
+.btn--auth {
+  display: inline-block;
+  width: 257px;
+  height: 69px;
+  line-height: 69px;
+  background-color: #d9d9d9;
+  color: #000;
+  font-size: 24px;
+  font-weight: 700;
+  border-radius: 10px;
+  border: 1px solid #000;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.btn--auth:hover {
+  background-color: #c7c7c7;
+}
+
+.btn-link {
+  display: inline-block;
+  margin-top: 50px;
+  font-size: 20px;
+  color: #0073cc;
+  text-decoration: none;
+}
+
+.btn-link:hover {
+  text-decoration: underline;
+}
+
+.success-message {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2E7D32;
+  line-height: 1.4;
+  width: 720px;
+  margin: 0 auto 60px auto;
+}

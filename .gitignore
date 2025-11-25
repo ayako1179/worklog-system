@@ -1,0 +1,13 @@
+/docker/mysql/
+/docker/mysql/data/
+/docker/mysql/data/**/*
+/docker/**/data/
+/docker/**/logs/
+.DS_Store
+Thumbs.db
+/.idea
+/.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+/node_modules
+/dist

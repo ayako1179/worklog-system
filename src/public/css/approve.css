@@ -1,0 +1,239 @@
+body {
+  background-color: #f0eff2;
+}
+
+.approve-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 93px auto;
+}
+
+.title {
+  align-items: center;
+  position: relative;
+  font-size: 30px;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 55px;
+  padding-left: 30px;
+}
+
+/* タイトル左の縦ライン */
+.title::before {
+  content: "";
+  position: absolute;
+  left: -15px;
+  top: 50%;
+  width: 40px;
+  height: 8px;
+  background-color: #000000;
+  transform: rotate(90deg);
+}
+
+.approve-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+.approve-table tr {
+  border-bottom: 2px solid #e1e1e1;
+  vertical-align: middle;
+}
+
+.approve-table th,
+.approve-table td {
+  padding: 30px 0;
+}
+
+.approve-table th {
+  color: #737373;
+  font-weight: 700;
+  font-size: 16px;
+  padding-left: 64px;
+  text-align: left;
+  letter-spacing: 0.15em;
+}
+
+.approve-table td {
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.15em;
+  color: #000000;
+}
+
+/* .time-input {
+  width: 103px;
+  height: 29px;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  padding: 0 8px;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.15em;
+  background-color: #ffffff;
+  outline: none;
+  box-sizing: border-box;
+} */
+
+.value-cell {
+  display: flex;
+  align-items: center;
+  gap: 43px;
+}
+
+.name-text {
+  margin-left: 20px;
+}
+
+.date-text {
+  display: flex;
+  align-items: center;
+}
+
+.date-year {
+  margin-right: 140px;
+  margin-left: 20px;
+}
+
+/* .note-input {
+  width: 316px;
+  height: 72px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #000000;
+  resize: none;
+  line-height: 1;
+} */
+
+/* テーブル最下行の線を消す */
+.approve-table tr:last-child {
+  border-bottom: none;
+}
+
+/* .pending-message {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1;
+  letter-spacing: 0.15em;
+  color: #FF000080;
+} */
+
+.value-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+/* .error-message {
+  display: flex;
+  align-items: center;
+  gap: 43px;
+} */
+
+/* .error-text {
+  display: block;
+  color: #e74c3c;
+  font-size: 16px;
+  margin-left: 0;
+  padding-left: 2px;
+} */
+
+.time-text {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 103px;
+  height: 29px;
+  padding: 0 8px;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  align-items: center;
+  letter-spacing: 0.15em;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  border: none;
+  /* margin-left: 10px; */
+}
+
+.center {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  /* ← 好きな幅に調整可能（例は20px） */
+  height: 29px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #000000;
+}
+
+.approve-group {
+  display: flex;
+  align-items: center;
+  gap: 45px;
+  /* ← disabled の時だけ gap を上書き */
+}
+
+.approve-note {
+  display: inline-flex;
+  align-items: center;
+  width: 316px;
+  box-sizing: border-box;
+  border: none;
+  background-color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #000000;
+  line-height: 1;
+  margin-left: 20px;
+}
+
+.submit-area {
+  text-align: right;
+  margin-top: 36px;
+}
+
+.submit-btn {
+  display: inline-flex;
+  justify-content: center;
+  width: 130px;
+  height: 50px;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 22px;
+  font-weight: 700;
+  align-items: center;
+  line-height: 1;
+  letter-spacing: 2px;
+}
+
+.submit-btn:hover {
+  opacity: 0.8;
+}
+
+.submit-btn:disabled,
+.submit-btn.is-disabled {
+  background: #696966;
+  /* border-color: #ccc; */
+  cursor: not-allowed;
+}

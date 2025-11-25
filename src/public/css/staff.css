@@ -1,0 +1,119 @@
+body {
+  background-color: #f0eff2;
+}
+
+/* コンテナ全体 */
+.staff-container {
+  max-width: 900px;
+  margin: 126px auto;
+  padding-bottom: 60px;
+  font-family: 'Inter', sans-serif;
+}
+
+/* タイトル */
+.title {
+  align-items: center;
+  position: relative;
+  font-size: 30px;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 98px;
+  padding-left: 30px;
+}
+
+/* タイトル左の縦ライン */
+.title::before {
+  content: "";
+  position: absolute;
+  left: -15px;
+  top: 50%;
+  width: 40px;
+  height: 8px;
+  background-color: #000000;
+  transform: rotate(90deg);
+}
+
+.staff-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+/* テーブルヘッダー */
+.staff-table thead {
+  background-color: #ffffff;
+  border-bottom: 3px solid #E1E1E1;
+}
+
+.staff-table th {
+  color: #737373;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 10px 0;
+  text-align: center;
+  letter-spacing: 0.15em;
+}
+
+/* .status-header {
+  text-align: center;
+} */
+
+/* テーブルボディ */
+.staff-table td {
+  color: #737373;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 10px 0;
+  border-bottom: 2px solid #E1E1E1;
+  text-align: center;
+}
+
+/* .status-text {
+  letter-spacing: 0.15em;
+} */
+
+/* .correction-table td .col-status {
+  letter-spacing: 0.15em;
+} */
+
+/* 詳細リンク */
+.detail-btn {
+  color: #000000;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.15em;
+}
+
+/* テーブル最下行の線を消す */
+.staff-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* 各列の幅バランス */
+.staff-table th:nth-child(1),
+.staff-table td:nth-child(1) {
+  width: 35%;
+  text-align: center;
+  padding-left: 60px;
+}
+
+.staff-table th:nth-child(2),
+.staff-table td:nth-child(2) {
+  width: 30%;
+  text-align: center;
+  /* padding-left: 45px; */
+}
+
+/* 詳細ボタン列 */
+.staff-table th:nth-child(3),
+.staff-table td:nth-child(3) {
+  width: 35%;
+  text-align: center;
+  padding-right: 50px;
+}

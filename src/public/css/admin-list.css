@@ -1,0 +1,169 @@
+body {
+  background-color: #f0eff2;
+}
+
+/* コンテナ全体 */
+.list-container {
+  max-width: 900px;
+  margin: 90px auto;
+  padding-bottom: 60px;
+  font-family: 'Inter', sans-serif;
+}
+
+/* タイトル */
+.title {
+  align-items: center;
+  position: relative;
+  font-size: 30px;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 43px;
+  padding-left: 30px;
+}
+
+/* タイトル左の縦ライン */
+.title::before {
+  content: "";
+  position: absolute;
+  left: -15px;
+  top: 50%;
+  width: 40px;
+  height: 8px;
+  background-color: #000000;
+  transform: rotate(90deg);
+}
+
+/* 月切り替えナビエリア */
+.day-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffffff;
+  border-radius: 10px;
+  width: 900px;
+  height: 60px;
+  margin: 30px auto;
+  padding: 0 25px;
+}
+
+/* 前月・翌月リンク共通 */
+.day-btn {
+  display: flex;
+  align-items: center;
+  color: #737373;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  gap: 7px;
+}
+
+/* 左矢印（共通） */
+.arrow-icon {
+  width: 20px;
+  height: 15px;
+  opacity: 0.3;
+}
+
+/* 右矢印（反転） */
+.right-arrow {
+  transform: rotate(180deg);
+}
+
+/* 中央の年月部分 */
+.day-center {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.calendar-icon {
+  width: 25px;
+  height: 25px;
+}
+
+.day-display {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000000;
+}
+
+/* テーブルコンテナ */
+.attendance-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+/* テーブルヘッダー */
+.attendance-table thead {
+  background-color: #ffffff;
+  border-bottom: 3px solid #E1E1E1;
+}
+
+.attendance-table th {
+  color: #737373;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 10px 0;
+  text-align: center;
+  letter-spacing: 0.15em;
+}
+
+/* テーブルボディ */
+.attendance-table td {
+  color: #737373;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.20em;
+  padding: 10px 0;
+  border-bottom: 2px solid #E1E1E1;
+}
+
+/* 各列の幅バランス */
+.attendance-table th:nth-child(1),
+.attendance-table td:nth-child(1) {
+  width: 20%;
+  /* 日付（少し広め） */
+  text-align: center;
+  /* padding-left: 55px; */
+}
+
+.attendance-table th:nth-child(2),
+.attendance-table td:nth-child(2),
+.attendance-table th:nth-child(3),
+.attendance-table td:nth-child(3),
+.attendance-table th:nth-child(4),
+.attendance-table td:nth-child(4),
+.attendance-table th:nth-child(5),
+.attendance-table td:nth-child(5) {
+  width: 15%;
+  /* 出勤〜合計を均等に */
+  text-align: center;
+  padding-left: 45px;
+}
+
+/* 詳細ボタン列 */
+.attendance-table th:nth-child(6),
+.attendance-table td:nth-child(6) {
+  width: 20%;
+  text-align: center;
+}
+
+/* 詳細リンク */
+.detail-btn {
+  color: #000000;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.15em;
+}
+
+/* テーブル最下行の線を消す */
+.attendance-table tr:last-child td {
+  border-bottom: none;
+}
