@@ -75,7 +75,7 @@
             詳細
           </a>
           @else
-            <span class="detail-btn">詳細</span>
+          <span class="detail-btn">詳細</span>
           @endif
         </td>
       </tr>
@@ -85,7 +85,11 @@
 
   <!-- CSV出力ボタン -->
   <div class="csv-wrapper">
-    <a href="{{ route('admin.csv', $staff->id) }}" class="csv-btn">
+    <a href="{{ route('admin.attendance.staff', [
+      'id' => $staff->id,
+      'month' => $currentMonth->format('Y-m'),
+      'csv' => 1
+      ]) }}" class="csv-btn">
       CSV出力
     </a>
   </div>

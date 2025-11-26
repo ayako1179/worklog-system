@@ -66,10 +66,10 @@ class FortifyServiceProvider extends ServiceProvider
                     $user = $request->user();
 
                     if ($user->role === 'admin') {
-                        return redirect()->intended('/admin/attendance/list');
+                        return redirect()->route('admin.attendance.list');
                     }
 
-                    return redirect()->intended('/attendance');
+                    return redirect()->route('home');
                 }
             };
         });

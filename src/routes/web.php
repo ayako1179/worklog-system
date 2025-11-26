@@ -51,7 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // スタッフ別勤怠一覧画面
     Route::get('/admin/attendance/staff/{id}', [AdminAttendanceController::class, 'staffMonthlyList'])->name('admin.attendance.staff');
-    Route::post('/admin/attendance/staff/{id}', [AdminAttendanceController::class, 'downloadCsv'])->name('admin.csv');
+    // Route::post('/admin/attendance/staff/{id}', [AdminAttendanceController::class, 'downloadCsv'])->name('admin.csv');
 
     // 修正申請承認画面
     Route::get('/stamp_correction_request/approve/{attendance_correct_request_id}', [AdminCorrectionController::class, 'show'])->name('admin.approve.show');

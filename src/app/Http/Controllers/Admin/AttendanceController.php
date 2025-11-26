@@ -9,6 +9,7 @@ use App\Models\BreakTime;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AttendanceController extends Controller
 {
@@ -121,6 +122,10 @@ class AttendanceController extends Controller
                 return Carbon::parse($item->work_date)->toDateString();
             });
 
+        if ($request->has('csv')) {
+            return $this->exportCsv($staff, $attendances, $currentMonth);
+        }
+
         // 月の日付リスト
         $dates = collect();
         $start = $currentMonth->copy()->startOfMonth();
@@ -135,8 +140,42 @@ class AttendanceController extends Controller
         );
     }
 
-    public function downloadCsv($id)
+    private function exportCsv($staff, $attendances, $currentMonth)
     {
-        return response()->download(storage_path('app/sample.csv'));
+        $fileName = "attendance_{$staff->id}_{$currentMonth->format('Y_m')}.csv";
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"$fileName\""
+        ];
+
+        $columns = ['日付', '出勤', '退勤', '休憩合計', '勤務合計'];
+
+        return new StreamedResponse(function () use ($attendances, $columns) {
+            $handle = fopen('php://output', 'w');
+
+            fputcsv($handle, $columns);
+
+            foreach ($attendances as $attendance) {
+
+                $break = $attendance->total_break_time
+                    ? substr($attendance->total_break_time, 0, 5)
+                    : '';
+
+                $work = $attendance->total_work_time
+                    ? substr($attendance->total_work_time, 0, 5)
+                    : '';
+
+                fputcsv($handle, [
+                    $attendance->work_date,
+                    $attendance->work_start ? \Carbon\Carbon::parse($attendance->work_start)->format('H:i') : '',
+                    $attendance->work_end ? \Carbon\Carbon::parse($attendance->work_end)->format('H:i') : '',
+                    $break,
+                    $work,
+                ]);
+            }
+
+            fclose($handle);
+        }, 200, $headers);
     }
 }

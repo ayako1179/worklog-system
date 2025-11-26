@@ -59,7 +59,13 @@
       <!-- 既存休憩 -->
       @foreach($breakTimes as $index => $bt)
       <tr>
-        <th>休憩{{ $index + 1 }}</th>
+        <th>
+          @if($index === 0)
+          休憩
+          @else
+          休憩{{ $index + 1 }}
+          @endif
+        </th>
         <td class="value-cell value-column">
 
           <div class="error-message">
