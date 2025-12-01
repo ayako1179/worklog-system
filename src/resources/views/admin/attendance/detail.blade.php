@@ -36,17 +36,25 @@
         </td>
       </tr>
 
+      <input type="hidden" name="work_date" value="{{ optional($attendance->work_date)->format('Y-m-d') }}">
+
       <!-- 出勤・退勤 -->
       <tr>
         <th>出勤・退勤</th>
         <td class="value-cell value-column">
 
           <div class="error-message">
-            <input type="time" name="work_start" class="time-input" value="{{ old('work_start', $attendance->work_start ? \Carbon\Carbon::parse($attendance->work_start)->format('H:i') : '') }}">
+            <input type="time"
+              name="work_start"
+              class="time-input"
+              value="{{ old('work_start', optional($attendance->work_start)->format('H:i')) }}">
 
             <span class="center">～</span>
 
-            <input type="time" name="work_end" class="time-input" value="{{ old('work_end', $attendance->work_end ? \Carbon\Carbon::parse($attendance->work_end)->format('H:i') : '') }}">
+            <input type="time"
+              name="work_end"
+              class="time-input"
+              value="{{ old('work_end', optional($attendance->work_end)->format('H:i')) }}">
           </div>
 
           @error('work_time')
@@ -69,18 +77,29 @@
         <td class="value-cell value-column">
 
           <div class="error-message">
-            <input type="time" name="breaks[{{ $index }}][start]" class="time-input" value="{{ old("breaks.$index.start", \Carbon\Carbon::parse($bt->break_start)->format('H:i')) }}">
+            <!-- <input type="time"
+              name="breaks[{{ $index }}][start]"
+              class="time-input"
+              value="{{ optional($bt->break_start)->format('H:i') }}"> -->
+            <input type="time"
+              name="breaks[{{ $index }}][start]"
+              class="time-input"
+              value="{{ $bt->break_start ? \Carbon\Carbon::parse($bt->break_start)->format('H:i') : '' }}">
 
             <span class="center">～</span>
 
-            <input type="time" name="breaks[{{ $index }}][end]" class="time-input" value="{{ old("breaks.$index.end", \Carbon\Carbon::parse($bt->break_end)->format('H:i')) }}">
+            <!-- <input type="time"
+              name="breaks[{{ $index }}][end]"
+              class="time-input"
+              value="{{ optional($bt->break_end)->format('H:i') }}"> -->
+            <input type="time"
+              name="breaks[{{ $index }}][end]"
+              class="time-input"
+              value="{{ $bt->break_end ? \Carbon\Carbon::parse($bt->break_end)->format('H:i') : '' }}">
           </div>
 
           @php
-          $breakError = $errors->first("breaks.$index.start");
-          if (!$breakError) {
-          $breakError = $errors->first("breaks.$index.end");
-          }
+          $breakError = $errors->first("breaks.$index.start") ?: $errors->first("breaks.$index.end");
           @endphp
 
           @if ($breakError)
@@ -92,7 +111,10 @@
 
       <!-- 追加休憩（常に表示） -->
       <tr>
-        <th>休憩{{ $breakTimes->count() + 1 }}</th>
+        <th>
+          {{ $breakTimes->isEmpty() ? '休憩' : '休憩' . ($breakTimes->count() + 1) }}
+        </th>
+        <!-- <th>休憩{{ $breakTimes->count() + 1 }}</th> -->
         <td class="value-cell value-column">
 
           <div class="error-message">

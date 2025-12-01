@@ -57,13 +57,17 @@ class AttendanceController extends Controller
 
     public function update(AdminAttendanceUpdateRequest $request, $id)
     {
+
         // 対象勤怠を取得（休憩込み）
         $attendance = Attendance::with('breakTimes')->findOrFail($id);
 
         // 勤怠情報の更新
-        $attendance->work_date = $request->work_date;
-        $attendance->work_start = $request->work_start;
-        $attendance->work_end = $request->work_end;
+        $attendance->work_start = Carbon::parse("{$request->work_date} {$request->work_start}");
+
+        $attendance->work_end = $request->work_end
+            ? Carbon::parse("{$request->work_date} {$request->work_end}")
+            : null;
+
         $attendance->note = $request->note;
         $attendance->save();
 
@@ -75,8 +79,14 @@ class AttendanceController extends Controller
                 $start = $request->breaks[$index]['start'] ?? null;
                 $end = $request->breaks[$index]['end'] ?? null;
 
-                $bt->break_start = $start;
-                $bt->break_end = $end;
+                $bt->break_start = $start
+                    ? Carbon::parse("{$request->work_date} {$start}")->format('H:i:s')
+                    : null;
+
+                $bt->break_end = $end
+                    ? Carbon::parse("{$request->work_date} {$end}")->format('H:i:s')
+                    : null;
+
                 $bt->save();
             }
         }
@@ -90,13 +100,37 @@ class AttendanceController extends Controller
             if ($bs && $be) {
                 BreakTime::create([
                     'attendance_id' => $attendance->id,
-                    'break_start' => $bs,
-                    'break_end' => $be,
+                    'break_start' => Carbon::parse("{$request->work_date} {$bs}")->format('H:i:s'),
+                    'break_end' => Carbon::parse("{$request->work_date} {$be}")->format('H:i:s'),
                 ]);
             }
         }
 
-        return redirect()->back();
+        // 合計時間の更新
+        $totalBreakMinutes = 0;
+
+        foreach ($attendance->breakTimes as $bt) {
+            if ($bt->break_start && $bt->break_end) {
+                $start = Carbon::parse($bt->break_start);
+                $end = Carbon::parse($bt->break_end);
+                $totalBreakMinutes += $start->diffInMinutes($end);
+            }
+        }
+
+        $totalWorkMinutes = 0;
+
+        if ($attendance->work_start && $attendance->work_end) {
+            $start = Carbon::parse($attendance->work_start);
+            $end = Carbon::parse($attendance->work_end);
+            $totalWorkMinutes = $end->diffInMinutes($start) - $totalBreakMinutes;
+        }
+
+        $attendance->total_break_time = sprintf('%02d:%02d:00', intdiv($totalBreakMinutes, 60), $totalBreakMinutes % 60);
+        $attendance->total_work_time = sprintf('%02d:%02d:00', intdiv($totalWorkMinutes, 60), $totalWorkMinutes % 60);
+
+        $attendance->save();
+
+        return redirect()->route('admin.attendance.show', $attendance->id);
     }
 
     public function staffMonthlyList(Request $request, $id)

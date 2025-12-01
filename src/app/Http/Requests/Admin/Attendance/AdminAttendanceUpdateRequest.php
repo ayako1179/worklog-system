@@ -59,19 +59,30 @@ class AdminAttendanceUpdateRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
+            $date = $this->work_date;
 
-            $start = $this->work_start;
-            $end = $this->work_end;
+            $workStart = Carbon::parse("{$date} {$this->work_start}");
 
-            if (strtotime($start) >= strtotime($end)) {
+            $workEnd = $this->work_end
+                ? Carbon::parse("{$date} {$this->work_end}")
+                : null;
+
+            // $start = $this->work_start;
+            // $end = $this->work_end;
+
+            // $start = substr($this->work_start, 0, 5);
+            // $end = substr($this->work_end, 0, 5);
+
+            if ($workEnd && $workStart->gte($workEnd)) {
                 $validator->errors()->add('work_time', '出勤時間もしくは退勤時間が不適切な値です');
                 return;
             }
 
-            $date = $this->route('date') ?? $this->work_date;
+            // $date = $this->route('date') ?? $this->work_date;
+            // $date = $this->work_date;
 
-            $workStartCarbon = Carbon::parse("$date $start");
-            $workEndCarbon = Carbon::parse("$date $end");
+            // $workStartCarbon = Carbon::parse("{$date} {$start}");
+            // $workEndCarbon = Carbon::parse("{$date} {$end}");
 
             foreach ($this->breaks ?? [] as $key => $break) {
 
@@ -80,18 +91,27 @@ class AdminAttendanceUpdateRequest extends FormRequest
 
                 if (!$bs && !$be) continue;
 
-                $bsC = $bs ? Carbon::parse("$date $bs") : null;
-                $beC = $be ? Carbon::parse("$date $be") : null;
+                // $bs = $bs ? substr($bs, 0, 5) : null;
+                // $be = $be ? substr($be, 0, 5) : null;
 
-                if (($bsC && $bsC->lt($workStartCarbon)) ||
-                    ($beC && $beC->gt($workEndCarbon))
-                ) {
+                $bsC = $bs ? Carbon::parse("{$date} {$bs}") : null;
+                $beC = $be ? Carbon::parse("{$date} {$be}") : null;
 
-                    $validator->errors()->add(
-                        "breaks.$key.start",
-                        '休憩時間が勤務時間外です'
-                    );
+                if ($workEnd) {
+                    if (($bsC && $bsC->lt($workStart)) || ($beC && $beC->gt($workEnd))) {
+                        $validator->errors()->add("breaks.$key.start", '休憩時間が勤務時間外です');
+                    }
                 }
+
+                // if (($bsC && $bsC->lt($workStartCarbon)) ||
+                //     ($beC && $beC->gt($workEndCarbon))
+                // ) {
+
+                //     $validator->errors()->add(
+                //         "breaks.$key.start",
+                //         '休憩時間が勤務時間外です'
+                //     );
+                // }
             }
         });
     }

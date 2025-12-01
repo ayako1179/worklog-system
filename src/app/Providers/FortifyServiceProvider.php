@@ -14,6 +14,7 @@ use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\RegisterResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
+use Laravel\Fortify\Features;
 use App\Providers\RouteServiceProvider;
 // use League\Config\Exception\ValidationException;
 
@@ -32,6 +33,11 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        config(['fortify.features' => [
+            Features::registration(),
+            Features::emailVerification(),
+        ]]);
+
         Fortify::createUsersUsing(CreateNewUser::class);
 
         Fortify::loginView(function () {
@@ -107,33 +113,47 @@ class FortifyServiceProvider extends ServiceProvider
             $user = \App\Models\User::where('email', $request->email)->first();
 
             if (! $user) {
-                return null;
+                throw ValidationException::withMessages([
+                    'email' => ['ログイン情報が登録されていません'],
+                ]);
             }
+            // if (! $user) {
+            //     return null;
+            // }
 
             // どちらのログインフォームから来たかを hidden で受け取る
             $loginType = $request->input('login_type', 'staff');
 
             // 管理者ログイン画面から来たのに role が admin ではない場合拒否
             if ($loginType === 'admin' && $user->role !== 'admin') {
-                return null;
+                throw ValidationException::withMessages([
+                    'email' => ['ログイン情報が登録されていません'],
+                ]);
+                // return null;
             }
 
             // 一般ログイン画面から来たのに role が staff ではない場合拒否
-            if ($loginType === 'staff' && $user->role !== 'staff') {
-                return null;
-            }
+            // if ($loginType === 'staff' && $user->role !== 'staff') {
+            //     return null;
+            // }
 
             // メール未認証は弾く
             if (is_null($user->email_verified_at)) {
-                return null;
+                throw ValidationException::withMessages([
+                    'email' => ['ログイン情報が登録されていません'],
+                ]);
+                // return null;
             }
 
             // パスワードチェック
             if (\Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
-                return $user;
+                throw ValidationException::withMessages([
+                    'email' => ['ログイン情報が登録されていません'],
+                ]);
+                // return $user;
             }
 
-            return null;
+            return $user;
         });
 
         RateLimiter::for('login', function (Request $request) {

@@ -60,6 +60,32 @@ class CorrectionController extends Controller
             ]);
         }
 
+        // 休憩を再取得
+        $attendance->load('breakTimes');
+
+        // 合計時間を再計算して保存
+        $totalBreakMinutes = 0;
+
+        foreach ($attendance->breakTimes as $bt) {
+            if ($bt->break_start && $bt->break_end) {
+                $start = \Carbon\Carbon::parse($bt->break_start);
+                $end = \Carbon\Carbon::parse($bt->break_end);
+                $totalBreakMinutes += $start->diffInMinutes($end);
+            }
+        }
+
+        $totalWorkMinutes = 0;
+
+        if ($attendance->work_start && $attendance->work_end) {
+            $start = \Carbon\Carbon::parse($attendance->work_start);
+            $end = \Carbon\Carbon::parse($attendance->work_end);
+            $totalWorkMinutes = $end->diffInMinutes($start) - $totalBreakMinutes;
+        }
+
+        $attendance->total_break_time = sprintf('%02d:%02d:00', intdiv($totalBreakMinutes, 60), $totalBreakMinutes % 60);
+        $attendance->total_work_time = sprintf('%02d:%02d:00', intdiv($totalWorkMinutes, 60), $totalWorkMinutes % 60);
+        $attendance->save();
+
         // 修正申請を approved に
         $correction->approval_status = 'approved';
         $correction->save();

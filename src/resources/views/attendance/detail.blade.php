@@ -116,11 +116,15 @@
       @endforeach
 
       <!-- 追加休憩（常に表示） -->
+      @if ($isEditable)
       <tr>
-        <th>休憩{{ $breakTimes->count() + 1 }}</th>
+        <th>
+          {{ $breakTimes->isEmpty() ? '休憩' : '休憩' . ($breakTimes->count() + 1) }}
+        </th>
+        <!-- <th>休憩{{ $breakTimes->count() + 1 }}</th> -->
         <td class="value-cell value-column">
 
-          @if ($isEditable)
+
           <div class="error-message">
             <input type="time" name="breaks[new][start]" class="time-input">
 
@@ -133,20 +137,9 @@
           <span class="error-text">{{ $message }}</span>
           @enderror
 
-          @else
-          <div class="display-group">
-            <span class="disabled-text">
-              {{ \Carbon\Carbon::parse($bt->break_start)->format('H:i') }}
-            </span>
-            <span class="center-disabled-text">～</span>
-            <span class="disabled-text">
-              {{ \Carbon\Carbon::parse($bt->break_end)->format('H:i') }}
-            </span>
-          </div>
-          @endif
-
         </td>
       </tr>
+      @endif
 
       <!-- 備考 -->
       <tr>

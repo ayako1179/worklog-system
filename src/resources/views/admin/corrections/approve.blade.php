@@ -55,7 +55,13 @@
       <!-- 申請された休憩 -->
       @foreach($requestedBreaks as $index => $rb)
       <tr>
-        <th>休憩{{ $index + 1 }}</th>
+        <th>
+          @if($index === 0)
+          休憩
+          @else
+          休憩{{ $index + 1 }}
+          @endif
+        </th>
         <td class="value-cell value-column">
           <div class="approve-group">
             <span class="time-text">

@@ -53,7 +53,9 @@ class AttendanceController extends Controller
     public function start()
     {
         $user = Auth::user();
-        $today = Carbon::today()->toDateString();
+        $now = Carbon::now();
+        $today = $now->toDateString();
+        // $today = Carbon::today()->toDateString();
 
         // 既に出勤記録がある場合は防止
         $exists = Attendance::where('user_id', $user->id)
@@ -67,7 +69,8 @@ class AttendanceController extends Controller
         Attendance::create([
             'user_id' => $user->id,
             'work_date' => $today,
-            'work_start' => Carbon::now(),
+            // 'work_start' => Carbon::now(),
+            'work_start' => $now,
             'status' => 'present',
         ]);
 

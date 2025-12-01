@@ -23,23 +23,9 @@ class Attendance extends Model
 
     protected $casts = [
         'work_date' => 'date',
-        // 'work_start' => 'datetime:H:i',
-        // 'work_end' => 'datetime:H:i',
-        // 'total_break_time' => 'datetime:H:i:s',
-        // 'total_work_time' => 'datetime:H:i:s',
+        'work_start' => 'datetime:H:i:s',
+        'work_end' => 'datetime:H:i:s',
     ];
-
-    public function getWorkStartAttribute($value)
-    {
-        if ($value === null) return null;
-        return Carbon::parse($value)->format('H:i');
-    }
-
-    public function getWorkEndAttribute($value)
-    {
-        if ($value === null) return null;
-        return Carbon::parse($value)->format('H:i');
-    }
 
     public function user()
     {

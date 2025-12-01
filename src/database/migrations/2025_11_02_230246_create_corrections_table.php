@@ -17,8 +17,8 @@ class CreateCorrectionsTable extends Migration
             $table->id();
             $table->foreignId('attendance_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->dateTime('corrected_start')->nullable();
-            $table->dateTime('corrected_end')->nullable();
+            $table->time('corrected_start')->nullable();
+            $table->time('corrected_end')->nullable();
             $table->text('reason');
             $table->string('approval_status', 20);
             $table->timestamps();

@@ -63,24 +63,4 @@ class AdminLoginRequest extends FormRequest
             ]);
         }
     }
-    //     $user = User::where('email', $this->email)->first();
-
-    //     if (!$user) {
-    //         throw ValidationException::withMessages([
-    //             'email' => ['ログイン情報が登録されていません'],
-    //         ]);
-    //     }
-
-    //     if ($user->role !== 'admin') {
-    //         throw ValidationException::withMessages([
-    //             'email' => ['ログイン情報が登録されていません'],
-    //         ]);
-    //     }
-
-    //     if (!Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-    //         throw ValidationException::withMessages([
-    //             'email' => ['ログイン情報が登録されていません'],
-    //         ]);
-    //     }
-    // }
 }

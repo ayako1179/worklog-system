@@ -16,10 +16,10 @@ class BreakTime extends Model
         'break_end',
     ];
 
-    // protected $casts = [
-    //     'break_start' => 'datetime:H:i',
-    //     'break_end' => 'datetime:H:i',
-    // ];
+    protected $casts = [
+        'break_start' => 'datetime:H:i:s',
+        'break_end' => 'datetime:H:i:s',
+    ];
 
     public function getBreakStartAttribute($value)
     {

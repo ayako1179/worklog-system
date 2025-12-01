@@ -3,7 +3,7 @@
   max-width: 680px;
   /* height: auto; */
   /* min-height: calc(100vh - 80px); */
-  margin: 0 auto;
+  margin: 70px auto;
   /* padding: 40px 20px; */
   display: flex;
   flex-direction: column;
@@ -17,7 +17,7 @@
   font-size: 36px;
   font-weight: 700;
   text-align: center;
-  margin-top: 108px;
+  margin-top: 38px;
   margin-bottom: 72px;
   color: #000000;
 }
@@ -87,7 +87,7 @@
   text-decoration: underline;
 }
 
-p.error {
+.error {
   font-family: 'Inter', sans-serif;
   font-size: 20px;
   color: #FF5555;
