@@ -62,27 +62,14 @@ class AdminAttendanceUpdateRequest extends FormRequest
             $date = $this->work_date;
 
             $workStart = Carbon::parse("{$date} {$this->work_start}");
-
             $workEnd = $this->work_end
                 ? Carbon::parse("{$date} {$this->work_end}")
                 : null;
-
-            // $start = $this->work_start;
-            // $end = $this->work_end;
-
-            // $start = substr($this->work_start, 0, 5);
-            // $end = substr($this->work_end, 0, 5);
 
             if ($workEnd && $workStart->gte($workEnd)) {
                 $validator->errors()->add('work_time', '出勤時間もしくは退勤時間が不適切な値です');
                 return;
             }
-
-            // $date = $this->route('date') ?? $this->work_date;
-            // $date = $this->work_date;
-
-            // $workStartCarbon = Carbon::parse("{$date} {$start}");
-            // $workEndCarbon = Carbon::parse("{$date} {$end}");
 
             foreach ($this->breaks ?? [] as $key => $break) {
 
@@ -91,27 +78,24 @@ class AdminAttendanceUpdateRequest extends FormRequest
 
                 if (!$bs && !$be) continue;
 
-                // $bs = $bs ? substr($bs, 0, 5) : null;
-                // $be = $be ? substr($be, 0, 5) : null;
-
                 $bsC = $bs ? Carbon::parse("{$date} {$bs}") : null;
                 $beC = $be ? Carbon::parse("{$date} {$be}") : null;
 
                 if ($workEnd) {
+
+                    if ($bsC && $bsC->gt($workEnd)) {
+                        $validator->errors()->add("breaks.$key.start", '休憩時間が勤務時間外です');
+                    }
+
+
                     if (($bsC && $bsC->lt($workStart)) || ($beC && $beC->gt($workEnd))) {
                         $validator->errors()->add("breaks.$key.start", '休憩時間が勤務時間外です');
                     }
+
+                    if ($beC && $beC->gt($workEnd)) {
+                        $validator->errors()->add("breaks.$key.end", '休憩時間が勤務時間外です');
+                    }
                 }
-
-                // if (($bsC && $bsC->lt($workStartCarbon)) ||
-                //     ($beC && $beC->gt($workEndCarbon))
-                // ) {
-
-                //     $validator->errors()->add(
-                //         "breaks.$key.start",
-                //         '休憩時間が勤務時間外です'
-                //     );
-                // }
             }
         });
     }

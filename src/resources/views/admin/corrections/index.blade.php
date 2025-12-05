@@ -39,10 +39,6 @@
     <tbody>
       @forelse($corrections as $correction)
       <tr>
-        <!-- <td style="color:red;">
-          correction.id = {{ $correction->id }} /
-          attendance_id = {{ $correction->attendance_id }}
-        </td> -->
         <td class="status-text">
           {{ $correction->approval_status === 'pending' ? '承認待ち' : '承認済み' }}
         </td>
