@@ -145,7 +145,11 @@
     </table>
 
     <div class="submit-area">
+      @if (session('success'))
+      <p class="pending-message">{{ session('success') }}</p>
+      @else
       <button class="submit-btn">修正</button>
+      @endif
     </div>
 
   </form>

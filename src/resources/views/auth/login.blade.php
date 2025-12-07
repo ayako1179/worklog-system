@@ -11,6 +11,8 @@
   <form action="{{ route('login') }}" method="POST" class="auth__form">
     @csrf
 
+    <input type="hidden" name="login_type" value="staff">
+
     <div class="auth__group">
       <label for="email" class="auth__label">メールアドレス</label>
       <input type="text" id="email" name="email" value="{{ old('email') }}">

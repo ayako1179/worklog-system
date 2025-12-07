@@ -103,6 +103,14 @@ class FortifyServiceProvider extends ServiceProvider
             return new class implements LogoutResponse {
                 public function toResponse($request)
                 {
+                    $role = $request->cookie('logout_role');
+
+                    \Cookie::queue(\Cookie::forget('logout_role'));
+
+                    if ($role === 'admin') {
+                        return redirect()->route('admin.login');
+                    }
+
                     return redirect()->route('login');
                 }
             };
@@ -117,9 +125,6 @@ class FortifyServiceProvider extends ServiceProvider
                     'email' => ['ログイン情報が登録されていません'],
                 ]);
             }
-            // if (! $user) {
-            //     return null;
-            // }
 
             // どちらのログインフォームから来たかを hidden で受け取る
             $loginType = $request->input('login_type', 'staff');
@@ -133,24 +138,24 @@ class FortifyServiceProvider extends ServiceProvider
             }
 
             // 一般ログイン画面から来たのに role が staff ではない場合拒否
-            // if ($loginType === 'staff' && $user->role !== 'staff') {
-            //     return null;
-            // }
-
-            // メール未認証は弾く
-            if (is_null($user->email_verified_at)) {
+            if ($loginType === 'staff' && $user->role !== 'staff') {
                 throw ValidationException::withMessages([
                     'email' => ['ログイン情報が登録されていません'],
                 ]);
-                // return null;
             }
 
+            // メール未認証は弾く
+            // if ($user->role === 'staff' && is_null($user->email_verified_at)) {
+            //     throw ValidationException::withMessages([
+            //         'email' => ['メール認証が完了していません'],
+            //     ]);
+            // }
+
             // パスワードチェック
-            if (\Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
+            if (! \Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
                 throw ValidationException::withMessages([
                     'email' => ['ログイン情報が登録されていません'],
                 ]);
-                // return $user;
             }
 
             return $user;

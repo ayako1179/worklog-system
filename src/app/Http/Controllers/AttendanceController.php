@@ -20,15 +20,15 @@ class AttendanceController extends Controller
         $today = Carbon::today()->toDateString();
 
         // 今日の勤怠データを取得
-        $attendance = Attendance::where('user_id', $user->id)
+        $todayAttendance = Attendance::where('user_id', $user->id)
             ->whereDate('work_date', $today)
             ->latest('id')
             ->first();
 
         // ステータス変更
         $status = '勤務外';
-        if ($attendance) {
-            switch ($attendance->status) {
+        if ($todayAttendance) {
+            switch ($todayAttendance->status) {
                 case 'present':
                     $status = '出勤中';
                     break;
@@ -46,7 +46,12 @@ class AttendanceController extends Controller
         $weekdays = ['日', '月', '火', '水', '木', '金', '土'];
         $weekday = $weekdays[$now->dayOfWeek];
 
-        return view('attendance.index', compact('attendance', 'status', 'now', 'weekday'));
+        return view('attendance.index', [
+            'todayAttendance' => $todayAttendance,
+            'status' => $status,
+            'now' => $now,
+            'weekday' => $weekday,
+        ]);
     }
 
     // 出勤処理
@@ -133,7 +138,8 @@ class AttendanceController extends Controller
         $nextMonth = $currentMonth->copy()->addMonth()->format('Y-m');
 
         // 当月の全勤怠データ取得
-        $attendances = Attendance::where('user_id', $user->id)
+        $attendances = Attendance::with('breakTimes')
+            ->where('user_id', $user->id)
             ->whereYear('work_date', $currentMonth->year)
             ->whereMonth('work_date', $currentMonth->month)
             ->get()

@@ -19,7 +19,7 @@
 
   <!-- ボタンエリア -->
   <div class="button-area">
-    @if ($status === '勤務外')
+    @if (is_null($todayAttendance?->work_start))
     <!-- 出勤ボタン -->
     <form action="{{ route('attendance.start') }}" method="POST">
       @csrf

@@ -16,7 +16,6 @@ class AttendanceController extends Controller
     public function list(Request $request)
     {
         $date = $request->query('date', now()->toDateString());
-
         $currentDate = \Carbon\Carbon::parse($date);
 
         $prevDate = $currentDate->copy()->subDay()->toDateString();
@@ -26,6 +25,37 @@ class AttendanceController extends Controller
             ->whereDate('work_date', $currentDate)
             ->orderBy('user_id')
             ->get();
+
+        foreach ($attendances as $attendance) {
+            $totalBreakMinutes = 0;
+
+            foreach ($attendance->breakTimes as $bt) {
+                if ($bt->break_start && $bt->break_end) {
+                    $start = \Carbon\Carbon::parse($bt->break_start);
+                    $end = \Carbon\Carbon::parse($bt->break_end);
+                    $totalBreakMinutes += $start->diffInMinutes($end);
+                }
+            }
+
+            $totalWorkMinutes = 0;
+            if ($attendance->work_start && $attendance->work_end) {
+                $start = \Carbon\Carbon::parse($attendance->work_start);
+                $end = \Carbon\Carbon::parse($attendance->work_end);
+                $totalWorkMinutes = $end->diffInMinutes($start) - $totalBreakMinutes;
+            }
+
+            $attendance->total_break_time = sprintf(
+                '%02d:%02d:00',
+                intdiv($totalBreakMinutes, 60),
+                $totalBreakMinutes % 60
+            );
+
+            $attendance->total_work_time = sprintf(
+                '%02d:%02d:00',
+                intdiv($totalWorkMinutes, 60),
+                $totalWorkMinutes % 60
+            );
+        }
 
         return view('admin.attendance.list', compact(
             'attendances',
@@ -106,6 +136,8 @@ class AttendanceController extends Controller
             }
         }
 
+        $attendance->load('breakTimes');
+
         // 合計時間の更新
         $totalBreakMinutes = 0;
 
@@ -127,10 +159,11 @@ class AttendanceController extends Controller
 
         $attendance->total_break_time = sprintf('%02d:%02d:00', intdiv($totalBreakMinutes, 60), $totalBreakMinutes % 60);
         $attendance->total_work_time = sprintf('%02d:%02d:00', intdiv($totalWorkMinutes, 60), $totalWorkMinutes % 60);
-
         $attendance->save();
 
-        return redirect()->route('admin.attendance.show', $attendance->id);
+        return redirect()
+            ->route('admin.attendance.show', $attendance->id)
+            ->with('success', '修正が完了しました');
     }
 
     public function staffMonthlyList(Request $request, $id)
