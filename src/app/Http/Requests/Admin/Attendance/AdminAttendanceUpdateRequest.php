@@ -25,14 +25,10 @@ class AdminAttendanceUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            // 出勤・退勤
             'work_start' => ['required', 'date_format:H:i'],
             'work_end' => ['required', 'date_format:H:i'],
-
-            // 既存休憩
             'breaks.*.start' => ['nullable', 'date_format:H:i'],
             'breaks.*.end' => ['nullable', 'date_format:H:i'],
-
             'note' => ['required', 'string', 'max:255'],
         ];
     }
@@ -40,17 +36,12 @@ class AdminAttendanceUpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            // 出勤・退勤
             'work_start.required' => '出勤時間もしくは退勤時間が不適切な値です',
             'work_end.required' => '出勤時間もしくは退勤時間が不適切な値です',
             'work_start.date_format' => '出勤時間もしくは退勤時間が不適切な値です',
             'work_end.date_format' => '出勤時間もしくは退勤時間が不適切な値です',
-
-            // 休憩開始・終了（勤務時間外）
             'breaks.*.start.date_format' => '休憩時間が勤務時間外です',
             'breaks.*.end.date_format' => '休憩時間が勤務時間外です',
-
-            // 備考
             'note.required' => '備考を記入してください',
             'note.max' => '備考は255文字以内で入力してください',
         ];
@@ -72,7 +63,6 @@ class AdminAttendanceUpdateRequest extends FormRequest
             }
 
             foreach ($this->breaks ?? [] as $key => $break) {
-
                 $bs = $break['start'] ?? null;
                 $be = $break['end'] ?? null;
 
@@ -82,11 +72,9 @@ class AdminAttendanceUpdateRequest extends FormRequest
                 $beC = $be ? Carbon::parse("{$date} {$be}") : null;
 
                 if ($workEnd) {
-
                     if ($bsC && $bsC->gt($workEnd)) {
                         $validator->errors()->add("breaks.$key.start", '休憩時間が勤務時間外です');
                     }
-
 
                     if (($bsC && $bsC->lt($workStart)) || ($beC && $beC->gt($workEnd))) {
                         $validator->errors()->add("breaks.$key.start", '休憩時間が勤務時間外です');

@@ -5,8 +5,6 @@ namespace App\Http\Requests\Auth;
 use Laravel\Fortify\Http\Requests\LoginRequest as FortifyLoginRequest;
 use League\Config\Exception\ValidationException;
 
-// use Illuminate\Foundation\Http\FormRequest;
-
 class LoginRequest extends FortifyLoginRequest
 {
     /**
@@ -37,7 +35,6 @@ class LoginRequest extends FortifyLoginRequest
         return [
             'email.required' => 'メールアドレスを入力してください',
             'email.email' => 'ログイン情報が登録されていません',
-
             'password.required' => 'パスワードを入力してください',
             'password.min' => 'ログイン情報が登録されていません',
             'auth.failed' => 'ログイン情報が登録されていません',

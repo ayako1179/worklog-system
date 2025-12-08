@@ -2,7 +2,6 @@ body {
   background-color: #F0EFF2;
 }
 
-/* 全体 */
 .attendance-container {
   width: 100%;
   max-width: 600px;
@@ -11,7 +10,6 @@ body {
   padding: 209px 0;
 }
 
-/* ステータスラベル */
 .status-tag {
   display: inline-block;
   background-color: #C8C8C8;
@@ -25,7 +23,6 @@ body {
   margin-bottom: 32px;
 }
 
-/* 日付表示 */
 .date-text {
   font-family: 'Inter', sans-serif;
   font-size: 40px;
@@ -33,7 +30,6 @@ body {
   margin-bottom: 32px;
 }
 
-/* 時刻表示 */
 .time-text {
   font-family: 'Inter', sans-serif;
   font-weight: 700;
@@ -42,7 +38,6 @@ body {
   margin-bottom: 90px;
 }
 
-/* ボタンエリア */
 .button-area {
   display: flex;
   justify-content: center;
@@ -59,7 +54,6 @@ body {
   transition: 0.3s;
 }
 
-/* 黒ボタン */
 .black-btn {
   background-color: #000000;
   color: #FFFFFF;
@@ -70,7 +64,6 @@ body {
   background-color: #333333;
 }
 
-/* 白ボタン */
 .white-btn {
   background-color: #FFFFFF;
   color: #000000;
@@ -80,7 +73,6 @@ body {
   background-color: #EAEAEA;
 }
 
-/* 退勤メッセージ */
 .thanks-text {
   font-size: 26px;
   font-weight: 700;

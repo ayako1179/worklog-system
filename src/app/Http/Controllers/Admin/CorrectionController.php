@@ -6,14 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\BreakTime;
 use App\Models\Correction;
-use Illuminate\Http\Request;
 
 class CorrectionController extends Controller
 {
-    // 承認画面の表示
     public function show($attendance_correct_request_id)
     {
-        // 修正申請
         $correction = Correction::with([
             'user',
             'attendance.breakTimes',
@@ -28,24 +25,17 @@ class CorrectionController extends Controller
         ]);
     }
 
-    // 承認処理
     public function approve($attendance_correct_request_id)
     {
         $correction = Correction::with(['correctionBreaks'])->findOrFail($attendance_correct_request_id);
-
         $attendance = Attendance::with('breakTimes')->findOrFail($correction->attendance_id);
 
-        // 勤怠（出勤・退勤）の更新
         $attendance->work_start = $correction->corrected_start ?? $attendance->work_start;
         $attendance->work_end = $correction->corrected_end ?? $attendance->work_end;
-
         $attendance->note = $correction->reason;
-
         $attendance->status = 'approved';
-
         $attendance->save();
 
-        // 休憩の更新（既存休憩を全部削除 → 申請された休憩を上書き）
         $attendance->breakTimes()->delete();
         foreach ($correction->correctionBreaks as $cb) {
             BreakTime::create([
@@ -55,10 +45,7 @@ class CorrectionController extends Controller
             ]);
         }
 
-        // 休憩を再取得
         $attendance->load('breakTimes');
-
-        // 合計時間を再計算して保存
         $totalBreakMinutes = 0;
 
         foreach ($attendance->breakTimes as $bt) {
@@ -81,11 +68,9 @@ class CorrectionController extends Controller
         $attendance->total_work_time = sprintf('%02d:%02d:00', intdiv($totalWorkMinutes, 60), $totalWorkMinutes % 60);
         $attendance->save();
 
-        // 修正申請を approved に
         $correction->approval_status = 'approved';
         $correction->save();
 
-        // 完了 → 承認待ち一覧へ戻す
         return redirect()
             ->route('correction.index', ['tab' => 'pending']);
     }

@@ -19,8 +19,6 @@
         </a>
       </div>
 
-      <!-- @if (!in_array(Route::currentRouteName(), ['login', 'register'])) -->
-
       <nav class="header__nav">
         @auth
         <a href="{{ route('home') }}">勤怠</a>
@@ -35,7 +33,6 @@
         </form>
         @endauth
       </nav>
-      <!-- @endif -->
     </header>
 
     <div class="content">

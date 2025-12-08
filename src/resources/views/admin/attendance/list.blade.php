@@ -10,7 +10,6 @@
     {{ $currentDate->format('Y年n月j日') }}の勤怠
   </h2>
 
-  <!-- 日付ナビ -->
   <div class="day-nav">
     <a href="{{ route('admin.attendance.list', ['date' => $prevDate]) }}" class="day-btn">
       <img src="{{ asset('images/arrow-left.png') }}" alt="前日" class="arrow-icon">
@@ -28,7 +27,6 @@
     </a>
   </div>
 
-  <!-- 勤怠テーブル -->
   <table class="attendance-table">
     <thead>
       <tr>
@@ -46,29 +44,18 @@
       @php
       $user = $attendance->user;
       @endphp
-
       <tr>
         <td>{{ $user->name }}</td>
-
         <td>{{ $attendance->work_start ? \Carbon\Carbon::parse($attendance->work_start)->format('H:i') : '' }}</td>
-
         <td>{{ $attendance->work_end ? \Carbon\Carbon::parse($attendance->work_end)->format('H:i') : '' }}</td>
-
         <td>{{ $attendance->total_break_time ? \Carbon\Carbon::parse($attendance->total_break_time)->format('H:i') : '' }}</td>
-
         <td>{{ $attendance->total_work_time ? \Carbon\Carbon::parse($attendance->total_work_time)->format('H:i') : '' }}</td>
-
         <td>
           <a href="{{ route('admin.attendance.show', $attendance->id) }}" class="detail-btn">
             詳細
           </a>
         </td>
       </tr>
-
-      @empty
-      <!-- <tr>
-        <td colspan="6" class="empty">該当の勤怠情報はありません</td>
-      </tr> -->
       @endforelse
     </tbody>
   </table>

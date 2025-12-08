@@ -1,15 +1,10 @@
 .auth {
   width: 100%;
   max-width: 680px;
-  /* height: auto; */
-  /* min-height: calc(100vh - 80px); */
   margin: 70px auto;
-  /* padding: 40px 20px; */
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
-  /* box-sizing: border-box; */
 }
 
 .auth__title {
@@ -21,10 +16,6 @@
   margin-bottom: 72px;
   color: #000000;
 }
-
-/* .auth--login .auth__title {
-  margin-top: 20px;
-} */
 
 .auth__form {
   width: 100%;
@@ -74,7 +65,6 @@
 
 .auth__link {
   text-align: center;
-  /* margin-top: 25px; */
 }
 
 .auth__link a {

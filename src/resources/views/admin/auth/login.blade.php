@@ -11,13 +11,11 @@
   <form action="{{ route('login') }}" method="POST" class="auth__form">
     @csrf
 
-    <!-- 管理者ログインだとFortifyに伝える -->
     <input type="hidden" name="login_type" value="admin">
 
     <div class="auth__group">
       <label for="email" class="auth__label">メールアドレス</label>
       <input type="text" id="email" name="email" value="{{ old('email') }}">
-
       @error('email')
       <p class="error">{{ $message }}</p>
       @enderror
@@ -26,7 +24,6 @@
     <div class="auth__group">
       <label for="password" class="auth__label">パスワード</label>
       <input type="password" id="password" name="password">
-
       @error('password')
       <p class="error">{{ $message }}</p>
       @enderror

@@ -3,7 +3,6 @@
 namespace Tests\Feature\Attendance;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-// use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Attendance;
@@ -41,7 +40,6 @@ class ClockInTest extends TestCase
     public function test_出勤は1日に1回のみで_退勤済や勤務中の場合は出勤ボタンが表示されない()
     {
         Carbon::setTestNow(Carbon::create(2025, 12, 1, 9, 0, 0));
-        // Carbon::setTestNow('2025-12-01 09:00:00');
 
         $user = User::factory()->create([
             'email_verified_at' => now(),
@@ -61,7 +59,6 @@ class ClockInTest extends TestCase
     public function test_出勤した時刻が勤怠一覧画面に正しく反映されている()
     {
         Carbon::setTestNow(Carbon::create(2025, 12, 1, 9, 0, 0));
-        // Carbon::setTestNow('2025-12-01 09:00:00');
 
         $user = User::factory()->create([
             'email_verified_at' => now(),

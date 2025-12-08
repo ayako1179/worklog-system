@@ -5,7 +5,6 @@ namespace App\Http\Requests\Admin\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use App\Models\User;
 
 class AdminLoginRequest extends FormRequest
 {
@@ -37,7 +36,6 @@ class AdminLoginRequest extends FormRequest
         return [
             'email.required' => 'メールアドレスを入力してください',
             'email.email' => 'ログイン情報が登録されていません',
-
             'password.required' => 'パスワードを入力してください',
             'password.min' => 'ログイン情報が登録されていません',
         ];
@@ -45,19 +43,16 @@ class AdminLoginRequest extends FormRequest
 
     public function authenticate()
     {
-        // 入力値でログイン試行
         $credentials = $this->only('email', 'password');
-
         if (!Auth::attempt($credentials)) {
             throw ValidationException::withMessages([
                 'email' => 'ログイン情報が登録されていません',
             ]);
         }
 
-        // ロール確認
         $user = Auth::user();
         if ($user->role !== 'admin') {
-            Auth::logout(); // セッション削除
+            Auth::logout();
             throw ValidationException::withMessages([
                 'email' => 'ログイン情報が登録されていません',
             ]);

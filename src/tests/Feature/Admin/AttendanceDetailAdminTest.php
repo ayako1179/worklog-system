@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\Attendance;
 use App\Models\BreakTime;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-// use Illuminate\Foundation\Testing\WithFaker;
 
 class AttendanceDetailAdminTest extends TestCase
 {

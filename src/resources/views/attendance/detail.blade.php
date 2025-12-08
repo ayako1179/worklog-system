@@ -6,15 +6,12 @@
 
 @section('content')
 <div class="detail-container">
-
   <h2 class="title">勤怠詳細</h2>
 
   <form action="{{ route('attendance.detail.submit', $attendance->id) }}" method="POST">
     @csrf
 
     <table class="detail-table">
-
-      <!-- 名前 -->
       <tr>
         <th>名前</th>
         <td class="value-cell">
@@ -22,7 +19,6 @@
         </td>
       </tr>
 
-      <!-- 日付 -->
       @php
       $parsed = \Carbon\Carbon::parse($attendance->work_date);
       @endphp
@@ -35,23 +31,17 @@
         </td>
       </tr>
 
-      <!-- 出勤・退勤 -->
       <tr>
         <th>出勤・退勤</th>
         <td class="value-cell value-column">
-
-          <!-- 入力可能 -->
           @if ($isEditable)
           <div class="error-message">
             <input type="time" name="work_start" class="time-input" value="{{ old('work_start', $attendance->work_start ? \Carbon\Carbon::parse($attendance->work_start)->format('H:i') : '') }}">
-
             <span class="center">～</span>
-
             <input type="time" name="work_end" class="time-input" value="{{ old('work_end', $attendance->work_end ? \Carbon\Carbon::parse($attendance->work_end)->format('H:i') : '') }}">
           </div>
           @else
           <div class="display-group">
-            <!-- 表示のみ -->
             <span class="disabled-text">
               {{ $attendance->work_start ? \Carbon\Carbon::parse($attendance->work_start)->format('H:i') : '--:--' }}
             </span>
@@ -61,15 +51,12 @@
             </span>
           </div>
           @endif
-
           @error('work_time')
           <span class="error-text">{{ $message }}</span>
           @enderror
-
         </td>
       </tr>
 
-      <!-- 既存休憩 -->
       @foreach($breakTimes as $index => $bt)
       <tr>
         <th>
@@ -80,13 +67,10 @@
           @endif
         </th>
         <td class="value-cell value-column">
-
           @if ($isEditable)
           <div class="error-message">
             <input type="time" name="breaks[{{ $index }}][start]" class="time-input" value="{{ old("breaks.$index.start", \Carbon\Carbon::parse($bt->break_start)->format('H:i')) }}">
-
             <span class="center">～</span>
-
             <input type="time" name="breaks[{{ $index }}][end]" class="time-input" value="{{ old("breaks.$index.end", \Carbon\Carbon::parse($bt->break_end)->format('H:i')) }}">
           </div>
           @else
@@ -115,37 +99,27 @@
       </tr>
       @endforeach
 
-      <!-- 追加休憩（常に表示） -->
       @if ($isEditable)
       <tr>
         <th>
           {{ $breakTimes->isEmpty() ? '休憩' : '休憩' . ($breakTimes->count() + 1) }}
         </th>
-        <!-- <th>休憩{{ $breakTimes->count() + 1 }}</th> -->
         <td class="value-cell value-column">
-
-
           <div class="error-message">
             <input type="time" name="breaks[new][start]" class="time-input">
-
             <span class="center">～</span>
-
             <input type="time" name="breaks[new][end]" class="time-input">
           </div>
-
           @error('break_time')
           <span class="error-text">{{ $message }}</span>
           @enderror
-
         </td>
       </tr>
       @endif
 
-      <!-- 備考 -->
       <tr>
         <th>備考</th>
         <td class="value-cell">
-
           @if ($isEditable)
           <div class="error">
             <textarea name="note" class="note-input">{{ old('note', $displayNote) }}</textarea>
@@ -173,7 +147,6 @@
       <button class="submit-btn">修正</button>
       @endif
     </div>
-
   </form>
 </div>
 @endsection

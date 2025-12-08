@@ -8,7 +8,6 @@
 <div class="correction-container">
   <h2 class="title">申請一覧</h2>
 
-  <!-- タブ -->
   <div class="correction-tabs">
     <a href="{{ route('correction.index', ['tab' => 'pending']) }}" class="tab-item {{ $tab === 'pending' ? 'active' : '' }}">
       承認待ち
@@ -19,12 +18,9 @@
     </a>
   </div>
 
-  <!-- タブ下の水平線 -->
   <div class="correction-tabs-line"></div>
 
-  <!-- テーブル -->
   <table class="correction-table">
-
     <thead>
       <tr>
         <th class="status-header">状態</th>

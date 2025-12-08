@@ -18,7 +18,6 @@ body {
   padding-left: 30px;
 }
 
-/* タイトル左の縦ライン */
 .title::before {
   content: "";
   position: absolute;
@@ -117,22 +116,18 @@ body {
   line-height: 1;
 }
 
-/* 共通：type="time" の時計アイコンを消す */
 input[type="time"]::-webkit-calendar-picker-indicator {
   display: none;
 }
 
-/* クローム系の “時間の上下矢印” を消す */
 input[type="time"]::-webkit-inner-spin-button {
   display: none;
 }
 
-/* Firefox のデフォルトアイコンも消す */
 input[type="time"] {
   -moz-appearance: textfield;
 }
 
-/* テーブル最下行の線を消す */
 .detail-table tr:last-child {
   border-bottom: none;
 }
@@ -188,15 +183,11 @@ input[type="time"] {
 }
 
 .disabled-text {
-  /* display: block; */
-  /* display: inline-block; */
   display: inline-flex;
   justify-content: center;
   align-items: center;
   width: 103px;
   height: 29px;
-  /* border: 1px solid #e1e1e1; */
-  /* border-radius: 4px; */
   padding: 0 8px;
   font-size: 16px;
   font-weight: 700;
@@ -204,12 +195,8 @@ input[type="time"] {
   align-items: center;
   letter-spacing: 0.15em;
   background-color: #ffffff;
-  /* outline: none; */
   box-sizing: border-box;
   border: none;
-  /* gap: 55px; */
-  /* margin-left: 15px; */
-  /* text-indent: 43px; */
 }
 
 .center-disabled {
@@ -217,7 +204,6 @@ input[type="time"] {
   justify-content: center;
   align-items: center;
   width: 20px;
-  /* ← 好きな幅に調整可能（例は20px） */
   height: 29px;
   font-size: 16px;
   font-weight: 700;
@@ -229,18 +215,12 @@ input[type="time"] {
   display: flex;
   align-items: center;
   gap: 45px;
-  /* ← disabled の時だけ gap を上書き */
 }
 
 .note-disabled {
   display: inline-flex;
-  /* justify-content: center; */
   align-items: center;
   width: 316px;
-  /* height: 72px; */
-  /* border: 1px solid #d9d9d9; */
-  /* border-radius: 4px; */
-  /* padding: 10px; */
   box-sizing: border-box;
   border: none;
   background-color: #ffffff;

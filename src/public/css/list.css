@@ -2,7 +2,6 @@ body {
   background-color: #f0eff2;
 }
 
-/* コンテナ全体 */
 .list-container {
   max-width: 900px;
   margin: 90px auto;
@@ -10,7 +9,6 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
-/* タイトル */
 .title {
   align-items: center;
   position: relative;
@@ -21,7 +19,6 @@ body {
   padding-left: 30px;
 }
 
-/* タイトル左の縦ライン */
 .title::before {
   content: "";
   position: absolute;
@@ -33,7 +30,6 @@ body {
   transform: rotate(90deg);
 }
 
-/* 月切り替えナビエリア */
 .month-nav {
   display: flex;
   align-items: center;
@@ -46,7 +42,6 @@ body {
   padding: 0 25px;
 }
 
-/* 前月・翌月リンク共通 */
 .month-btn {
   display: flex;
   align-items: center;
@@ -58,19 +53,16 @@ body {
   gap: 7px;
 }
 
-/* 左矢印（共通） */
 .arrow-icon {
   width: 20px;
   height: 15px;
   opacity: 0.3;
 }
 
-/* 右矢印（反転） */
 .right-arrow {
   transform: rotate(180deg);
 }
 
-/* 中央の年月部分 */
 .month-center {
   display: flex;
   align-items: center;
@@ -88,7 +80,6 @@ body {
   color: #000000;
 }
 
-/* テーブルコンテナ */
 .attendance-table {
   width: 100%;
   table-layout: fixed;
@@ -99,7 +90,6 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
-/* テーブルヘッダー */
 .attendance-table thead {
   background-color: #ffffff;
   border-bottom: 3px solid #E1E1E1;
@@ -114,7 +104,6 @@ body {
   letter-spacing: 0.15em;
 }
 
-/* テーブルボディ */
 .attendance-table td {
   color: #737373;
   font-size: 16px;
@@ -124,11 +113,9 @@ body {
   border-bottom: 2px solid #E1E1E1;
 }
 
-/* 各列の幅バランス */
 .attendance-table th:nth-child(1),
 .attendance-table td:nth-child(1) {
   width: 20%;
-  /* 日付（少し広め） */
   text-align: left;
   padding-left: 55px;
 }
@@ -142,19 +129,16 @@ body {
 .attendance-table th:nth-child(5),
 .attendance-table td:nth-child(5) {
   width: 15%;
-  /* 出勤〜合計を均等に */
   text-align: center;
   padding-left: 45px;
 }
 
-/* 詳細ボタン列 */
 .attendance-table th:nth-child(6),
 .attendance-table td:nth-child(6) {
   width: 20%;
   text-align: center;
 }
 
-/* 詳細リンク */
 .detail-btn {
   color: #000000;
   text-decoration: none;
@@ -163,7 +147,6 @@ body {
   letter-spacing: 0.15em;
 }
 
-/* テーブル最下行の線を消す */
 .attendance-table tr:last-child td {
   border-bottom: none;
 }
@@ -171,7 +154,6 @@ body {
 .csv-wrapper {
   display: flex;
   justify-content: flex-end;
-  /* 右端に寄せる */
   margin-top: 60px;
 }
 

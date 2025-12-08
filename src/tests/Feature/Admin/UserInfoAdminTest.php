@@ -6,9 +6,6 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
 use App\Models\Attendance;
-use App\Models\BreakTime;
-use Carbon\Carbon;
-// use Illuminate\Foundation\Testing\WithFaker;
 
 class UserInfoAdminTest extends TestCase
 {

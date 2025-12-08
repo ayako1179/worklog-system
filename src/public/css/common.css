@@ -25,32 +25,6 @@ body {
   object-fit: contain;
 }
 
-/* .header__search {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-} */
-
-/* .header__search input {
-  width: 500px;
-  height: 50px;
-  padding: 15px 31px;
-  border: 1px solid #000000;
-  border-radius: 5px;
-  background-color: #FFFFFF;
-  font-family: 'Inter', sans-serif;
-  font-size: 24px;
-  line-height: 1;
-  text-align: center;
-  color: #000000;
-} */
-
-/* .header__search input::placeholder {
-  color: #000000;
-  opacity: 1;
-} */
-
 .header__nav {
   display: flex;
   align-items: center;
@@ -67,43 +41,3 @@ body {
   color: #FFFFFF;
   text-decoration: none;
 }
-
-/* .header__nav .btn-sell {
-  display: inline-block;
-  width: 100px;
-  height: 50px;
-  line-height: 50px;
-  text-align: center;
-  font-size: 24px;
-  border: 1px solid #000000;
-  background-color: #FFFFFF;
-  color: #000000;
-  border-radius: 4px;
-  font-weight: bold;
-  text-decoration: none;
-} */
-
-/* .error {
-  font-family: 'Inter', sans-serif;
-  font-size: 20px;
-  color: red;
-} */
-
-/* .container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 80vh;
-  text-align: center;
-} */
-
-/* .container a {
-  font-size: 24px;
-  color: #007bff;
-  text-decoration: none;
-} */
-
-/* .container a:hover {
-  text-decoration: underline;
-} */

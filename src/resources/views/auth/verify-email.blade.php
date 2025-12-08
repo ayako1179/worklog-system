@@ -22,10 +22,6 @@
       認証はこちらから
     </a>
 
-    <!-- <a href="http://localhost:8025" target="_blank" rel="noopener noreferrer" class="btn--auth">
-      認証はこちらから
-    </a> -->
-
     <form method="POST" action="{{ route('verification.send') }}">
       @csrf
       <button type="submit" class="btn-link">

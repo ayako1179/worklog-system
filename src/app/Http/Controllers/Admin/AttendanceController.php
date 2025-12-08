@@ -65,17 +65,11 @@ class AttendanceController extends Controller
         ));
     }
 
-    // 勤怠詳細画面（管理者）
     public function show($id)
     {
-        // 勤怠データ
         $attendance = \App\Models\Attendance::with(['user', 'breakTimes'])
             ->findOrFail($id);
-
-        // 備考の表示用
         $displayNote = $attendance->note ?? '';
-
-        // 休憩データ
         $breakTimes = $attendance->breakTimes;
 
         return view('admin.attendance.detail', compact(
@@ -87,23 +81,15 @@ class AttendanceController extends Controller
 
     public function update(AdminAttendanceUpdateRequest $request, $id)
     {
-
-        // 対象勤怠を取得（休憩込み）
         $attendance = Attendance::with('breakTimes')->findOrFail($id);
-
-        // 勤怠情報の更新
         $attendance->work_start = Carbon::parse("{$request->work_date} {$request->work_start}");
-
         $attendance->work_end = $request->work_end
             ? Carbon::parse("{$request->work_date} {$request->work_end}")
             : null;
-
         $attendance->note = $request->note;
         $attendance->save();
 
-        // 休憩の更新
         foreach ($attendance->breakTimes as $index => $bt) {
-
             if (isset($request->breaks[$index])) {
 
                 $start = $request->breaks[$index]['start'] ?? null;
@@ -112,18 +98,14 @@ class AttendanceController extends Controller
                 $bt->break_start = $start
                     ? Carbon::parse("{$request->work_date} {$start}")->format('H:i:s')
                     : null;
-
                 $bt->break_end = $end
                     ? Carbon::parse("{$request->work_date} {$end}")->format('H:i:s')
                     : null;
-
                 $bt->save();
             }
         }
 
-        // 新規休憩の追加
         if (isset($request->breaks['new'])) {
-
             $bs = $request->breaks['new']['start'] ?? null;
             $be = $request->breaks['new']['end'] ?? null;
 
@@ -137,8 +119,6 @@ class AttendanceController extends Controller
         }
 
         $attendance->load('breakTimes');
-
-        // 合計時間の更新
         $totalBreakMinutes = 0;
 
         foreach ($attendance->breakTimes as $bt) {
@@ -168,19 +148,14 @@ class AttendanceController extends Controller
 
     public function staffMonthlyList(Request $request, $id)
     {
-        // 対象スタッフ
         $staff = User::where('id', $id)->firstOrFail();
-
-        // 表示する月（指定がなければ現在月）
         $currentMonth = $request->query('month')
             ? Carbon::parse($request->query('month') . '-01')
             : Carbon::now();
 
-        // 前月・翌月ボタン用
         $prevMonth = $currentMonth->copy()->subMonth()->format('Y-m');
         $nextMonth = $currentMonth->copy()->addMonth()->format('Y-m');
 
-        // 対象スタッフの当月の勤怠情報
         $attendances = Attendance::where('user_id', $id)
             ->whereYear('work_date', $currentMonth->year)
             ->whereMonth('work_date', $currentMonth->month)
@@ -193,7 +168,6 @@ class AttendanceController extends Controller
             return $this->exportCsv($staff, $attendances, $currentMonth);
         }
 
-        // 月の日付リスト
         $dates = collect();
         $start = $currentMonth->copy()->startOfMonth();
         $end = $currentMonth->copy()->endOfMonth();
@@ -210,12 +184,10 @@ class AttendanceController extends Controller
     private function exportCsv($staff, $attendances, $currentMonth)
     {
         $fileName = "attendance_{$staff->id}_{$currentMonth->format('Y_m')}.csv";
-
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => "attachment; filename=\"$fileName\""
         ];
-
         $columns = ['日付', '出勤', '退勤', '休憩合計', '勤務合計'];
 
         return new StreamedResponse(function () use ($attendances, $columns) {

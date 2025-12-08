@@ -24,8 +24,6 @@ class CreateAttendancesTable extends Migration
             $table->time('total_work_time')->nullable();
             $table->string('note', 255)->nullable();
             $table->timestamps();
-
-            // 複合ユニーク制約：同じユーザーが同じ日に複数の出勤記録を持てない
             $table->unique(['user_id', 'work_date']);
         });
     }

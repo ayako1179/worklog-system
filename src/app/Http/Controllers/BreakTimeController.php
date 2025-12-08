@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\BreakTime;
 use Carbon\Carbon;
@@ -14,7 +13,6 @@ class BreakTimeController extends Controller
     {
         $user = Auth::user();
         $today = Carbon::today()->toDateString();
-
         $attendance = Attendance::where('user_id', $user->id)
             ->whereDate('work_date', $today)
             ->first();
@@ -37,7 +35,6 @@ class BreakTimeController extends Controller
     {
         $user = Auth::user();
         $today = Carbon::today()->toDateString();
-
         $attendance = Attendance::where('user_id', $user->id)
             ->whereDate('work_date', $today)
             ->first();

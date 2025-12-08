@@ -15,7 +15,6 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        // 管理者ユーザー
         User::create([
             'role' => 'admin',
             'name' => '佐藤　花子',
@@ -24,7 +23,6 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        // 一般ユーザー
         User::create([
             'role' => 'staff',
             'name' => '西　伶奈',
@@ -62,6 +60,7 @@ class UserSeeder extends Seeder
             'name' => '秋田　朋美',
             'email' => 'tomomi.a@coachtech.com',
             'password' => Hash::make('password5'),
+            'email_verified_at' => now(),
         ]);
 
         User::create([
@@ -69,6 +68,7 @@ class UserSeeder extends Seeder
             'name' => '中西　教夫',
             'email' => 'norio.n@coachtech.com',
             'password' => Hash::make('password6'),
+            'email_verified_at' => now(),
         ]);
     }
 }

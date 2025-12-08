@@ -43,32 +43,21 @@
       $attendance = $attendances->get($workDate);
       @endphp
       <tr>
-        <!-- 日付（常に表示） -->
         <td>
           {{ $date->format('m/d') }}({{ ['日','月','火','水','木','金','土'][$date->dayOfWeek] }})
         </td>
-
-        <!-- 出勤 -->
         <td>
           {{ $attendance && $attendance->work_start ? \Carbon\Carbon::parse($attendance->work_start)->format('H:i') : '' }}
         </td>
-
-        <!-- 退勤 -->
         <td>
           {{ $attendance && $attendance->work_end ? \Carbon\Carbon::parse($attendance->work_end)->format('H:i') : '' }}
         </td>
-
-        <!-- 休憩 -->
         <td>
           {{ $attendance && $attendance->total_break_time ? \Carbon\Carbon::parse($attendance->total_break_time)->format('H:i') : '' }}
         </td>
-
-        <!-- 合計 -->
         <td>
           {{ $attendance && $attendance->total_work_time ? \Carbon\Carbon::parse($attendance->total_work_time)->format('H:i') : '' }}
         </td>
-
-        <!-- 詳細リンク（常に表示） -->
         <td>
           <a href="{{ route('attendance.detail.show', ['id' => $attendance->id ?? 0, 'date' => $date->toDateString()]) }}" class="detail-btn">
             詳細

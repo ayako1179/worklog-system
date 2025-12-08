@@ -6,15 +6,12 @@
 
 @section('content')
 <div class="approve-container">
-
   <h2 class="title">勤怠詳細</h2>
 
   <form action="{{ route('admin.approve', $correction->id) }}" method="POST">
     @csrf
 
     <table class="approve-table">
-
-      <!-- 名前 -->
       <tr>
         <th>名前</th>
         <td class="value-cell">
@@ -22,7 +19,6 @@
         </td>
       </tr>
 
-      <!-- 日付 -->
       @php
       $parsed = \Carbon\Carbon::parse($attendance->work_date);
       @endphp
@@ -35,11 +31,9 @@
         </td>
       </tr>
 
-      <!-- 出勤・退勤 -->
       <tr>
         <th>出勤・退勤</th>
         <td class="value-cell value-column">
-
           <div class="approve-group">
             <span class="time-text">
               {{ $correction->corrected_start ? \Carbon\Carbon::parse($correction->corrected_start)->format('H:i') : '--:--' }}
@@ -52,7 +46,6 @@
         </td>
       </tr>
 
-      <!-- 申請された休憩 -->
       @foreach($requestedBreaks as $index => $rb)
       <tr>
         <th>
@@ -76,7 +69,6 @@
       </tr>
       @endforeach
 
-      <!-- 追加休憩（表示のみ） -->
       <tr>
         <th>休憩{{ $requestedBreaks->count() + 1 }}</th>
         <td class="value-cell value-column">
@@ -84,7 +76,6 @@
         </td>
       </tr>
 
-      <!-- 備考 -->
       <tr>
         <th>備考</th>
         <td class="value-cell">
