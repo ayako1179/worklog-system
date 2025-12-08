@@ -22,9 +22,7 @@
       <nav class="header__nav">
         @auth
         <a href="{{ route('home') }}">勤怠</a>
-
         <a href="{{ route('attendance.list') }}">勤怠一覧</a>
-
         <a href="{{ route('correction.index') }}">申請</a>
 
         <form action="{{ route('logout') }}" method="POST" class="inline-form">
@@ -36,12 +34,8 @@
     </header>
 
     <div class="content">
-
       @yield('content')
-
     </div>
   </div>
-  @yield('scripts')
 </body>
-
 </html>

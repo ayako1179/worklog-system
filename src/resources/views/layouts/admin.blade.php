@@ -19,32 +19,25 @@
         </a>
       </div>
 
-      @if (!in_array(Route::currentRouteName(), ['login']))
-
+      @if (!in_array(Route::currentRouteName(), ['admin.login']))
+      @auth
       <nav class="header__nav">
-        @auth
         <a href="{{ route('admin.attendance.list') }}">勤怠一覧</a>
-
         <a href="{{ route('admin.staff') }}">スタッフ一覧</a>
-
         <a href="{{ route('correction.index') }}">申請一覧</a>
 
         <form action="{{ route('logout') }}" method="POST" class="inline-form">
           @csrf
           <button type="submit" class="logout-link">ログアウト</button>
         </form>
-        @endauth
       </nav>
+      @endauth
       @endif
     </header>
 
     <div class="content">
-
       @yield('content')
-
     </div>
   </div>
-  @yield('scripts')
 </body>
-
 </html>

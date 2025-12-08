@@ -56,6 +56,10 @@
           </a>
         </td>
       </tr>
+      @empty
+      <tr>
+        <td colspan="6">勤怠データがありません</td>
+      </tr>
       @endforelse
     </tbody>
   </table>
