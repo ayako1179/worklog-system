@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="approve-container">
-  <h2 class="title">勤怠詳細</h2>
+  <h1 class="title">勤怠詳細</h1>
 
   <form action="{{ route('admin.approve', $correction->id) }}" method="POST">
     @csrf

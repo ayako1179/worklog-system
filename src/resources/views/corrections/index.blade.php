@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="correction-container">
-  <h2 class="title">申請一覧</h2>
+  <h1 class="title">申請一覧</h1>
 
   <div class="correction-tabs">
     <a href="{{ route('correction.index', ['tab' => 'pending']) }}" class="tab-item {{ $tab === 'pending' ? 'active' : '' }}">

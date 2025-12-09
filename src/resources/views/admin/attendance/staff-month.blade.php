@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="list-container">
-  <h2 class="title">{{ $staff->name }}さんの勤怠</h2>
+  <h1 class="title">{{ $staff->name }}さんの勤怠</h1>
   <div class="month-nav">
     <a href="{{ route('admin.attendance.staff', ['id' => $staff->id, 'month' => $prevMonth]) }}" class="month-btn">
       <img src="{{ asset('images/arrow-left.png') }}" alt="前月" class="arrow-icon">

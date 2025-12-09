@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="detail-container">
-  <h2 class="title">勤怠詳細</h2>
+  <h1 class="title">勤怠詳細</h1>
 
   <form action="{{ route('attendance.detail.submit', $attendance->id) }}" method="POST">
     @csrf
@@ -100,19 +100,27 @@
       @endforeach
 
       @if ($isEditable)
+      @php
+      $newIndex = $breakTimes->count();
+      @endphp
       <tr>
         <th>
-          {{ $breakTimes->isEmpty() ? '休憩' : '休憩' . ($breakTimes->count() + 1) }}
+          {{ $breakTimes->isEmpty() ? '休憩' : '休憩' . ($newIndex + 1) }}
         </th>
         <td class="value-cell value-column">
           <div class="error-message">
-            <input type="time" name="breaks[new][start]" class="time-input">
-            <span class="center">～</span>
-            <input type="time" name="breaks[new][end]" class="time-input">
+            <input type="time" name="breaks[{{ $newIndex }}][start]" class="time-input" value="{{ old("breaks.$newIndex.start") }}">
+            <span class=" center">～</span>
+            <input type="time" name="breaks[{{ $newIndex }}][end]" class="time-input" value="{{ old("breaks.$newIndex.end") }}">
           </div>
-          @error('break_time')
-          <span class="error-text">{{ $message }}</span>
-          @enderror
+
+          @php
+          $newBreakError = $errors->first("breaks.$newIndex.start") ?: $errors->first("breaks.$newIndex.end");
+          @endphp
+
+          @if($newBreakError)
+          <span class="error-text">{{ $newBreakError }}</span>
+          @endif
         </td>
       </tr>
       @endif

@@ -6,9 +6,9 @@
 
 @section('content')
 <div class="list-container">
-  <h2 class="title">
+  <h1 class="title">
     {{ $currentDate->format('Y年n月j日') }}の勤怠
-  </h2>
+  </h1>
 
   <div class="day-nav">
     <a href="{{ route('admin.attendance.list', ['date' => $prevDate]) }}" class="day-btn">
