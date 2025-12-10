@@ -187,7 +187,7 @@ php artisan db:seed
 #### ■ 一般ユーザー
 - `/login` からログイン
 - 新規登録後、**メール認証が必須**
-- 未認証の場合は
+- 未認証の場合
   → **メール認証誘導画面（verification.notice）へ自動リダイレクト**
 - 認証済みの場合
   → `/attendance` へ遷移
@@ -196,7 +196,7 @@ php artisan db:seed
 - `/admin/login` からログイン
 - シーディング時点でメール認証済みとして作成
 - 一般ユーザーが管理者ログイン画面からログインすることは不可
-  （Fortify の `authenticateUsing` で role 判定）
+（Fortify の `authenticateUsing` で role 判定）
 
 #### ■ パスワード・バリデーション
 - 8文字以上必須
@@ -286,7 +286,7 @@ Fortify の `LoginResponse` を上書きして実装しています。
   - 出張・特別休暇などで勤怠レコードが存在しない日
   - 未来の日付
 - 当日の勤怠を「後から新規追加する機能」は存在しない
-  → 出勤ボタンが唯一のレコード生成フロー
+→ 出勤ボタンが唯一のレコード生成フロー
 - 勤怠の修正は **修正申請機能（後述）** のみで行う
 
 ---
@@ -297,12 +297,12 @@ Fortify の `LoginResponse` を上書きして実装しています。
 修正したい場合は「申請」として登録します。
 
 1. **勤怠詳細画面で修正内容を入力**
-   （出勤時刻・退勤時刻・休憩時間・備考を編集）
+（出勤時刻・退勤時刻・休憩時間・備考を編集）
 2. `corrections` / `correction_breaks` に申請として保存
 3. attendances.status が `pending` （承認待ち）に更新
 4. 管理者が確認するまで attendances テーブルの内容は変わらない
 5. 管理者が承認すると attendances が申請内容で更新され
-   修正申請（corrections）は `approved` になる
+修正申請（corrections）は `approved` になる
 
 ---
 
@@ -312,7 +312,7 @@ Fortify の `LoginResponse` を上書きして実装しています。
 
 - 出勤・退勤・備考を attendances に反映
 - break_times は
-  **既存レコードをすべて削除 → correction_breaks の内容で再登録**
+**既存レコードをすべて削除 → correction_breaks の内容で再登録**
 - 合計休憩時間・勤務時間を再計算して保存
 - corrections.approval_status を `approved` に更新
 - attendances.status を `approved` に更新
@@ -534,7 +534,7 @@ php artisan test > tests/results.txt
 - テスト実行時は **毎回 worklog_test を使用** します
 - 本番DB（laravel_db）には影響しません
 - RefreshDatabase トレイトにより
-  **テストごとにテーブルが自動で初期化** されます
+**テストごとにテーブルが自動で初期化** されます
 
 ※ 本アプリのテストは PHPUnit により自動化されています。
 開発時点の主要機能はすべてテスト可能な状態です。
