@@ -103,7 +103,7 @@ DockerとLaravelの設定手順です。
 
 1. リポジトリをクローン
 ```bash
-git clone git@github.com:ayako1179/worklog-system.git
+git clone https://github.com/ayako1179/worklog-system.git
 cd worklog-system
 ```
 2. DockerDesktopアプリを立ち上げる
