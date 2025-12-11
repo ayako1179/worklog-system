@@ -40,8 +40,8 @@ class AttendanceFixRequest extends FormRequest
             'work_end.required' => '出勤時間もしくは退勤時間が不適切な値です',
             'work_start.date_format' => '出勤時間もしくは退勤時間が不適切な値です',
             'work_end.date_format' => '出勤時間もしくは退勤時間が不適切な値です',
-            'breaks.*.start.date_format' => '休憩時間が勤務時間外です',
-            'breaks.*.end.date_format' => '休憩時間が勤務時間外です',
+            'breaks.*.start.date_format' => '休憩時間が不適切な値です',
+            'breaks.*.end.date_format' => '休憩時間もしくは退勤時間が不適切な値です',
             'note.required' => '備考を記入してください',
             'note.max' => '備考は255文字以内で入力してください',
         ];
@@ -59,8 +59,8 @@ class AttendanceFixRequest extends FormRequest
             }
 
             $date = $this->route('date') ?? $this->work_date;
-            $workStartCarbon = Carbon::parse("$date $start");
-            $workEndCarbon = Carbon::parse("$date $end");
+            $workStart = Carbon::parse("$date $start");
+            $workEnd = Carbon::parse("$date $end");
 
             foreach ($this->breaks ?? [] as $key => $break) {
                 $bs = $break['start'] ?? null;
@@ -71,13 +71,12 @@ class AttendanceFixRequest extends FormRequest
                 $bsC = $bs ? Carbon::parse("$date $bs") : null;
                 $beC = $be ? Carbon::parse("$date $be") : null;
 
-                if (($bsC && $bsC->lt($workStartCarbon)) ||
-                    ($beC && $beC->gt($workEndCarbon))
-                ) {
-                    $validator->errors()->add(
-                        "breaks.$key.start",
-                        '休憩時間が勤務時間外です'
-                    );
+                if ($bsC && ($bsC->lt($workStart) || $bsC->gt($workEnd))) {
+                    $validator->errors()->add("breaks.$key.start", '休憩時間が不適切な値です');
+                }
+
+                if ($beC && $beC->gt($workEnd)) {
+                    $validator->errors()->add("breaks.$key.start", '休憩時間もしくは退勤時間が不適切な値です');
                 }
             }
         });

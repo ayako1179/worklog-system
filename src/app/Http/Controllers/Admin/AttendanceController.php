@@ -67,21 +67,71 @@ class AttendanceController extends Controller
 
     public function show($id)
     {
-        $attendance = \App\Models\Attendance::with(['user', 'breakTimes'])
+        $attendance = Attendance::with(['user', 'breakTimes', 'corrections.correctionBreaks'])
             ->findOrFail($id);
-        $displayNote = $attendance->note ?? '';
+
+        $latestCorrection = $attendance->corrections()
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        $isPending = $latestCorrection && $latestCorrection->approval_status === 'pending';
+
+        $displayNote = $isPending
+            ? $latestCorrection->reason
+            : ($attendance->note ?? '');
+
         $breakTimes = $attendance->breakTimes;
+
+        if ($isPending && $latestCorrection) {
+            $displayBreaks = [];
+
+            foreach ($breakTimes as $bt) {
+                $displayBreaks[] = [
+                    'start' => $bt->break_start,
+                    'end'   => $bt->break_end,
+                    'type'  => 'existing'
+                ];
+            }
+
+            foreach ($latestCorrection->correctionBreaks as $cb) {
+                $displayBreaks[] = [
+                    'start' => $cb->break_start,
+                    'end'   => $cb->break_end,
+                    'type'  => 'correction'
+                ];
+            }
+        } else {
+            $displayBreaks = $breakTimes->map(function ($bt) {
+                return [
+                    'start' => $bt->break_start,
+                    'end'   => $bt->break_end,
+                    'type'  => 'existing'
+                ];
+            })->toArray();
+        }
 
         return view('admin.attendance.detail', compact(
             'attendance',
-            'breakTimes',
-            'displayNote'
+            'displayNote',
+            'isPending',
+            'displayBreaks'
         ));
     }
 
     public function update(AdminAttendanceUpdateRequest $request, $id)
     {
         $attendance = Attendance::with('breakTimes')->findOrFail($id);
+
+        $latestCorrection = $attendance->corrections()
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        if ($latestCorrection && $latestCorrection->approval_status === 'pending') {
+            return redirect()
+                ->route('admin.attendance.show', $attendance->id)
+                ->with('error', '*承認待ちのため修正できません。');
+        }
+
         $attendance->work_start = Carbon::parse("{$request->work_date} {$request->work_start}");
         $attendance->work_end = $request->work_end
             ? Carbon::parse("{$request->work_date} {$request->work_end}")
@@ -89,32 +139,29 @@ class AttendanceController extends Controller
         $attendance->note = $request->note;
         $attendance->save();
 
-        foreach ($attendance->breakTimes as $index => $bt) {
-            if (isset($request->breaks[$index])) {
+        $submittedBreaks = $request->breaks ?? [];
 
-                $start = $request->breaks[$index]['start'] ?? null;
-                $end = $request->breaks[$index]['end'] ?? null;
+        foreach ($submittedBreaks as $index => $break) {
+            if (isset($attendance->breakTimes[$index])) {
+                $bt = $attendance->breakTimes[$index];
 
-                $bt->break_start = $start
-                    ? Carbon::parse("{$request->work_date} {$start}")->format('H:i:s')
+                $bt->break_start = !empty($break['start'])
+                    ? Carbon::parse("{$request->work_date} {$break['start']}")->format('H:i:s')
                     : null;
-                $bt->break_end = $end
-                    ? Carbon::parse("{$request->work_date} {$end}")->format('H:i:s')
+
+                $bt->break_end = !empty($break['end'])
+                    ? Carbon::parse("{$request->work_date} {$break['end']}")->format('H:i:s')
                     : null;
+
                 $bt->save();
-            }
-        }
-
-        if (isset($request->breaks['new'])) {
-            $bs = $request->breaks['new']['start'] ?? null;
-            $be = $request->breaks['new']['end'] ?? null;
-
-            if ($bs && $be) {
-                BreakTime::create([
-                    'attendance_id' => $attendance->id,
-                    'break_start' => Carbon::parse("{$request->work_date} {$bs}")->format('H:i:s'),
-                    'break_end' => Carbon::parse("{$request->work_date} {$be}")->format('H:i:s'),
-                ]);
+            } else {
+                if (!empty($break['start']) && !empty($break['end'])) {
+                    BreakTime::create([
+                        'attendance_id' => $attendance->id,
+                        'break_start' => Carbon::parse("{$request->work_date} {$break['start']}")->format('H:i:s'),
+                        'break_end' => Carbon::parse("{$request->work_date} {$break['end']}")->format('H:i:s'),
+                    ]);
+                }
             }
         }
 

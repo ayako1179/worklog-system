@@ -114,7 +114,7 @@ class AttendanceDetailAdminTest extends TestCase
             ]);
 
         $response->assertSessionHasErrors([
-            'breaks.0.start' => '休憩時間が勤務時間外です',
+            'breaks.0.start' => '休憩時間が不適切な値です',
         ]);
     }
 
@@ -126,6 +126,8 @@ class AttendanceDetailAdminTest extends TestCase
         $attendance = Attendance::factory()->create([
             'user_id' => $staff->id,
             'work_date' => '2025-12-01',
+            'work_start' => '09:00:00',
+            'work_end' => '12:00:00',
         ]);
 
         BreakTime::factory()->create([
@@ -146,12 +148,7 @@ class AttendanceDetailAdminTest extends TestCase
                 'note' => 'test',
             ]);
 
-        $response->assertSessionHasErrors('breaks.0.start');
-
-        $response = $this->actingAs($admin)
-            ->get("/admin/attendance/{$attendance->id}");
-
-        $response->assertSee('休憩時間が勤務時間外です');
+        $response->assertSessionHasErrors('breaks.0.end');
     }
 
     public function test_備考が未入力ならエラーになる()

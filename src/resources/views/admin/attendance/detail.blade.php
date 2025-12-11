@@ -8,6 +8,10 @@
 <div class="detail-container">
   <h1 class="title">勤怠詳細</h1>
 
+  @php
+  $isEditable = !$isPending;
+  @endphp
+
   <form action="{{ route('admin.attendance.update', $attendance->id) }}" method="POST">
     @csrf
 
@@ -36,6 +40,7 @@
       <tr>
         <th>出勤・退勤</th>
         <td class="value-cell value-column">
+          @if($isEditable)
           <div class="error-message">
             <input type="time"
               name="work_start"
@@ -47,13 +52,24 @@
               class="time-input"
               value="{{ old('work_end', optional($attendance->work_end)->format('H:i')) }}">
           </div>
+          @else
+          <div class="display-group">
+            <span class="disabled-text">
+              {{ optional($attendance->work_start)->format('H:i') ?? '--:--' }}
+            </span>
+            <span class="center-disabled">～</span>
+            <span class="disabled-text">
+              {{ optional($attendance->work_end)->format('H:i') ?? '--:--' }}
+            </span>
+          </div>
+          @endif
           @error('work_time')
           <span class="error-text">{{ $message }}</span>
           @enderror
         </td>
       </tr>
 
-      @foreach($breakTimes as $index => $bt)
+      @foreach($displayBreaks as $index => $br)
       <tr>
         <th>
           @if($index === 0)
@@ -63,17 +79,29 @@
           @endif
         </th>
         <td class="value-cell value-column">
+          @if($isEditable)
           <div class="error-message">
             <input type="time"
               name="breaks[{{ $index }}][start]"
               class="time-input"
-              value="{{ $bt->break_start ? \Carbon\Carbon::parse($bt->break_start)->format('H:i') : '' }}">
+              value="{{ old("breaks.$index.start", $br['start']) }}">
             <span class="center">～</span>
             <input type="time"
               name="breaks[{{ $index }}][end]"
               class="time-input"
-              value="{{ $bt->break_end ? \Carbon\Carbon::parse($bt->break_end)->format('H:i') : '' }}">
+              value="{{ old("breaks.$index.end", $br['end']) }}">
           </div>
+          @else
+          <div class="display-group">
+            <span class="disabled-text">
+              {{ $br['start'] ? \Carbon\Carbon::parse($br['start'])   ->format('H:i') : '' }}
+            </span>
+            <span class="center-disabled">～</span>
+            <span class="disabled-text">
+              {{ $br['end'] ? \Carbon\Carbon::parse($br['end'])->format('H:i') : '' }}
+            </span>
+          </div>
+          @endif
 
           @php
           $breakError = $errors->first("breaks.$index.start") ?: $errors->first("breaks.$index.end");
@@ -86,12 +114,13 @@
       </tr>
       @endforeach
 
+      @if($isEditable)
       @php
-      $newIndex = $breakTimes->count();
+      $newIndex = count($displayBreaks);
       @endphp
       <tr>
         <th>
-          {{ $breakTimes->isEmpty() ? '休憩' : '休憩' . ($newIndex + 1) }}
+          {{ $newIndex === 0 ? '休憩' : '休憩' . ($newIndex + 1) }}
         </th>
         <td class="value-cell value-column">
           <div class="error-message">
@@ -111,22 +140,33 @@
           @endif
         </td>
       </tr>
+      @endif
 
       <tr>
         <th>備考</th>
         <td class="value-cell">
+          @if($isEditable)
           <div class="error">
-            <textarea name="note" class="note-input">{{ old('note', $attendance->note) }}</textarea>
+            <textarea name="note" class="note-input">{{ old('note', $displayNote) }}</textarea>
             @error('note')
             <span class="error-text">{{ $message }}</span>
             @enderror
           </div>
+          @else
+          <div class="display-group">
+            <span class="note-disabled">{{ $displayNote }}</span>
+          </div>
+          @endif
         </td>
       </tr>
     </table>
 
     <div class="submit-area">
-      @if (session('success'))
+      @if ($isPending)
+      <p class="pending-message">*承認待ちのため修正できません。</p>
+      @elseif (session('error'))
+      <p class="pending-message">{{ session('error') }}</p>
+      @elseif (session('success'))
       <p class="pending-message">{{ session('success') }}</p>
       @else
       <button class="submit-btn">修正</button>
