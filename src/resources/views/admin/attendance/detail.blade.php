@@ -84,12 +84,12 @@
             <input type="time"
               name="breaks[{{ $index }}][start]"
               class="time-input"
-              value="{{ old("breaks.$index.start", $br['start']) }}">
+              value="{{ old("breaks.$index.start", $br['start'] ? \Carbon\Carbon::parse($br['start'])->format('H:i') : '') }}">
             <span class="center">～</span>
             <input type="time"
               name="breaks[{{ $index }}][end]"
               class="time-input"
-              value="{{ old("breaks.$index.end", $br['end']) }}">
+              value="{{ old("breaks.$index.end", $br['end'] ? \Carbon\Carbon::parse($br['end'])->format('H:i') : '') }}">
           </div>
           @else
           <div class="display-group">

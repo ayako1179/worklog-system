@@ -207,11 +207,16 @@ class AttendanceController extends Controller
             ]);
         }
 
-        if (!empty($request->breaks['new']['start']) || !empty($request->breaks['new']['end'])) {
+        $newIndex = $attendance->breakTimes->count();
+
+        if (
+            !empty($request->breaks[$newIndex]['start']) ||
+            !empty($request->breaks[$newIndex]['end'])
+        ) {
             CorrectionBreak::create([
                 'correction_id' => $correction->id,
-                'break_start' => $request->breaks['new']['start'],
-                'break_end' => $request->breaks['new']['end'],
+                'break_start' => $request->breaks[$newIndex]['start'],
+                'break_end' => $request->breaks[$newIndex]['end'],
             ]);
         }
 

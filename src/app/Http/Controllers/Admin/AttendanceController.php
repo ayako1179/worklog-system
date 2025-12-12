@@ -67,8 +67,11 @@ class AttendanceController extends Controller
 
     public function show($id)
     {
-        $attendance = Attendance::with(['user', 'breakTimes', 'corrections.correctionBreaks'])
-            ->findOrFail($id);
+        $attendance = Attendance::with([
+            'user',
+            'breakTimes',
+            'corrections.correctionBreaks'
+        ])->findOrFail($id);
 
         $latestCorrection = $attendance->corrections()
             ->orderBy('created_at', 'desc')
@@ -80,32 +83,18 @@ class AttendanceController extends Controller
             ? $latestCorrection->reason
             : ($attendance->note ?? '');
 
-        $breakTimes = $attendance->breakTimes;
-
         if ($isPending && $latestCorrection) {
-            $displayBreaks = [];
-
-            foreach ($breakTimes as $bt) {
-                $displayBreaks[] = [
-                    'start' => $bt->break_start,
-                    'end'   => $bt->break_end,
-                    'type'  => 'existing'
-                ];
-            }
-
-            foreach ($latestCorrection->correctionBreaks as $cb) {
-                $displayBreaks[] = [
+            $displayBreaks = $latestCorrection->correctionBreaks->map(function ($cb) {
+                return [
                     'start' => $cb->break_start,
-                    'end'   => $cb->break_end,
-                    'type'  => 'correction'
+                    'end' => $cb->break_end,
                 ];
-            }
+            })->toArray();
         } else {
-            $displayBreaks = $breakTimes->map(function ($bt) {
+            $displayBreaks = $attendance->breakTimes->map(function ($bt) {
                 return [
                     'start' => $bt->break_start,
-                    'end'   => $bt->break_end,
-                    'type'  => 'existing'
+                    'end' => $bt->break_end,
                 ];
             })->toArray();
         }
@@ -113,8 +102,8 @@ class AttendanceController extends Controller
         return view('admin.attendance.detail', compact(
             'attendance',
             'displayNote',
-            'isPending',
-            'displayBreaks'
+            'displayBreaks',
+            'isPending'
         ));
     }
 
